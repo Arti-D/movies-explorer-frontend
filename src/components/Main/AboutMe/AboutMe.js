@@ -1,4 +1,5 @@
 import React from "react";
+import AboutProject from "../AboutProject/AboutProject";
 
 function AboutMe() {
     return (
@@ -22,3 +23,5 @@ function AboutMe() {
         </section>
     )
 }
+
+export default AboutMe;
