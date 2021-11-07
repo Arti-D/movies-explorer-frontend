@@ -2,7 +2,7 @@ import React from "react";
 
 function AboutProject() {
     return (
-        <div className="component about-project">
+        <section className="component about-project">
             <h2 className="about-project__title">О пректе</h2>
             <div className="about-project__text-wrapp">
                 <div className="about-project__text-block">
@@ -24,7 +24,7 @@ function AboutProject() {
                     <span className="about-project__type">Front-end</span>
                 </div>
             </div>
-        </div>
+        </section>
     )
 }
 

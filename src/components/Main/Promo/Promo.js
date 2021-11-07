@@ -1,7 +1,7 @@
 import React from "react";
 function Promo() {
     return (
-        <div className="component component_promo">
+        <section className="component component_promo">
             <div className="content promo">
                 <header className="promo__header">
                     <img className="promo__logo"/>
@@ -23,7 +23,7 @@ function Promo() {
                     <button className="promo__btn promo__more-btn">Узнать больше</button>
                 </div>
             </div>
-        </div>
+        </section>
     )
 }
 
