@@ -4,7 +4,9 @@ import { withRouter } from "react-router-dom";
 import './App.css';
 // ИМПОРТ КОМПОНЕНТОВ
 import Main from '../Main/Main.js';
-import Footer from '../Footer/Footer';
+import Footer from '../Footer/Footer.js';
+import Register from '../Register/Register.js';
+import Login from '../Login/Login.js'
 //
 
 function App() {
