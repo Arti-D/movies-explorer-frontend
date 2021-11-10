@@ -1,0 +1,30 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 18px;
+    padding-bottom: 18px;
+}
+
+.header_promo {
+    background-color: #F3C1F8;
+}
+
+.header__btn {
+    display: inline-block;
+    font-size: 12px;
+    height: 100%;
+    border-radius: 3px;
+    padding: 8px 20px;
+}
+
+.header__btn_signup {
+    color: black;
+    background-color: #F3C1F8;
+    margin-right: 10px;
+}
+
+.header__btn_signin {
+    color: white;
+    background-color: black;
+}
