@@ -6,6 +6,15 @@ function MoviesCardList() {
         <section className="movie-list component">
             <ul className="movie-list__list">
                 <MoviesCard/>
+                <MoviesCard/>
+                <MoviesCard/>
+                <MoviesCard/>
+                <MoviesCard/>
+                <MoviesCard/>
+                <MoviesCard/>
+                <MoviesCard/>
+                <MoviesCard/>
+                <MoviesCard/>
             </ul>
         </section>
     )
