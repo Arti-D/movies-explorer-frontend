@@ -2,6 +2,18 @@
     background-color: #F3C1F8;
 }
 
+.component_techs {
+    background-color: #F5F5F5;
+}
+
+.component__title {
+    border-bottom: 1px solid rgba(0, 0, 0, 1);
+    font-size: 22px;
+    font-weight: normal;
+    padding-bottom: 23px;
+    margin: 0;
+}
+
 .content {
     padding: 0 5.47%;
 }

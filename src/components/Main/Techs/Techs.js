@@ -2,9 +2,9 @@ import React from "react";
 
 function Techs() {
     return (
-        <section className="component techs">
-            <h2 className="component-title">Технологии</h2>
-            <div className="techs__content">
+        <section className="component component_techs techs">
+            <div className="content">
+                <h2 className="component__title">Технологии</h2>
                 <h3 className="techs__title">7 технологий</h3>
                 <p className="techs__annotation">На курсе веб-разработки мы освоили технологии, которые применили в дипломном проекте.</p>
                 <ul className="techs__list">

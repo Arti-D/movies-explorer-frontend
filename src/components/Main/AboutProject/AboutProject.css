@@ -1,14 +1,8 @@
 .about-project {
     padding-top: 110px;
+    padding-bottom: 110px;
 }
 
-.about-project__title {
-    border-bottom: 1px solid rgba(0, 0, 0, 1);
-    font-size: 22px;
-    font-weight: normal;
-    padding-bottom: 23px;
-    margin: 0;
-}
 
 .about-project__text-wrapp {
     display: flex;
