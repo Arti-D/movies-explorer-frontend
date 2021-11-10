@@ -10,6 +10,10 @@
     background-color: #F3C1F8;
 }
 
+.header__wrapp_login {
+    display: none;
+}
+
 .header__btn {
     display: inline-block;
     font-size: 12px;

@@ -1,4 +1,5 @@
 import React from "react";
+import promoImg from "../../../images/promo.png"
 function Promo() {
     return (
         <section className="component component_promo">
@@ -9,12 +10,11 @@ function Promo() {
                         <p className="promo__about">Листайте ниже, чтобы узнать больше про этот проект и его создателя.</p>
                     </div>
                     <div className="promo__image-container">
-                        <img className="promo__image"/>
+                        <img src={promoImg} className="promo__image"/>
                     </div>
                 </div>
-                <div className="promo__more">
-                    <button className="promo__btn promo__more-btn">Узнать больше</button>
-                </div>
+                    <a className="promo__link promo__more-link">Узнать больше</a>
+                
             </div>
         </section>
     )

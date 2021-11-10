@@ -1,7 +1,34 @@
 .promo {
+    padding-top: 75px;
+    padding-bottom: 25px;
+}
 
+.promo__content-wrapp {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 145px;
 }
 
 .promo__title {
     margin: 0;
+    max-width: 640px;
+    font-size: 50px;
+    font-weight: normal;
+    line-height: 1.16;
+    margin-bottom: 36px;
 }
+
+.promo__about {
+    font-size: 13px;
+    color: #A0A0A0;
+    max-width: 310px;
+    margin: 0;
+}
+
+.promo__link {
+    display: inline-block;
+    padding: 8px 18px;
+    border-radius: 3px;
+    border: 1px solid rgba(0, 0, 0, 0.6);
+}
+
