@@ -1,6 +1,6 @@
 import React from "react";
 
-function FilterCheckbox {
+function FilterCheckbox() {
     return (
         <div class="checkboxes">
             <label class="checkbox__item">
