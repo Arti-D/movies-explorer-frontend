@@ -3,15 +3,22 @@ import React from "react";
 function Footer() {
     return (
         <footer className="component footer">
-            <p className="footer__about">Учебный проект Яндекс.Практикум х BeatFilm.</p>
-            <div className="footer__main">
-                <p className="footer__copyright">&copy;Arti</p>
-                <ul className="footer__socials">
-                    <li className="footer__socials-elem">
-                        <a className="footetr__link" href="#">GitHub</a>
-                        <a className="footetr__link" href="#">Telegram</a>
-                    </li>
-                </ul>
+            <div className="content">
+                <p className="footer__about">Учебный проект Яндекс.Практикум х BeatFilm.</p>
+                <div className="footer__main">
+                    <p className="footer__copyright">&copy;Arti 2021</p>
+                    <ul className="footer__socials">
+                        <li className="footer__elem">
+                            <a className="footer__link" href="#">GitHub</a>
+                        </li>
+                        <li className="footer__elem">
+                            <a className="footer__link" href="#">Telegram</a>
+                        </li>
+                        <li className="footer__elem">
+                            <a className="footer__link" href="#">Яндекс.Практикум</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </footer>
     )
