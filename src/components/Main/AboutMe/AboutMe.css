@@ -1,0 +1,56 @@
+.about-me {
+    padding-top: 110px;
+    padding-bottom: 50px;
+}
+
+.about-me__profile {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 66px;
+    
+}
+
+.about-me__info {
+    width: 52.63%;
+}
+
+.about-me__name {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 50px;
+    line-height: 1.16;
+    letter-spacing: -0.04em;
+    margin: 0 0 18px 0;
+}
+
+.about-me__about {
+    margin: 0;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 1.57;
+}
+
+.about-me__avatar {
+    width: 23.7%;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.about-me__socials {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    margin-top: 100px;
+    margin-bottom: 0;
+}
+
+.about-me__socials-elem:first-child {
+    margin-right: 20px;
+}
+
+.about-me__link {
+    color: black;
+    text-decoration: none;
+    display: inline-block;
+}
