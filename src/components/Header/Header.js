@@ -1,29 +1,38 @@
 import React from "react";
+import { Link } from 'react-router-dom';
 import { useLocation } from "react-router";
 import logoPath from "../../images/headerLogo.png";
+import accountIcon from "../../images/account.svg";
 
 function Header(props) {
     const location = useLocation();
-    // const headerLocationClassName = (
-    //     `header ${location.pathname === '/' ? 'header_promo' : 'header_login'}`
-    // );
-    // const headerWrappLocationClassName = (
-    //     `header__wrapp ${location.pathname === '/' ? 'header__wrapp_promo' : 'header__wrapp_login'}`
-    // );
+
+    const headerVisibility = (
+        `header content ${location.pathname === '/signin' || location.pathname ==='/signup' ? 'header_hidden' : ''}`
+    )
+    const headerLocationClassName = (
+        `${location.pathname === '/' ? 'header_promo' : 'header_not-promo'}`
+    );
+    const headerWrappPromo = (
+        `header__wrapp ${location.pathname === '/' ? 'header__wrapp_hide' : ''}`
+    );
+    const headerWrappLogin = (
+        `header__wrapp ${location.pathname ==='/' ? '' : 'header__wrapp_hide'}`
+    )
 
     return (      
-    <header className="header_promo">
-        <div className="header content">
+    <header className={headerLocationClassName}>
+        <div className={headerVisibility}>
             <img alt="логотип" src={logoPath} className="header__logo"/>
             <div className="header__btn-wrapp">
-                <div className="header__wrapp header__wrapp_not-login">
-                    <a className="header__btn header__btn_signup">Регистрация</a>
-                    <a className="header__btn header__btn_signin">Войти</a>
+                <div className={headerWrappLogin}>
+                    <Link to="/signup" className="header__btn header__btn_signup">Регистрация</Link>
+                    <Link to="/signin" className="header__btn header__btn_signin">Войти</Link>
                 </div>
-                <div className="header__wrapp header__wrapp_login">
-                    <a className="header__link">Фильмы</a>
-                    <a className="header__link">Сохраненные фильмы</a>
-                    <a className="header__link"><img alt="аккаунт"/> Аккаунт</a>
+                <div className={headerWrappPromo}>
+                    <Link to="/movies" className="header__link">Фильмы</Link>
+                    <Link to="/saved-movies" className="header__link">Сохраненные фильмы</Link>
+                    <Link to="/profile" className="header__link header__account-link">Аккаунт<img className="header__acc-img" src={accountIcon} alt="аккаунт"/></Link>
             </div>
         </div>
         </div>

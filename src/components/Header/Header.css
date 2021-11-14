@@ -10,11 +10,20 @@
     background-color: #F3C1F8;
 }
 
-.header__wrapp_login {
+header_not-promo {
+    background-color: white;
+}
+
+.header_hidden {
+    display: none;
+}
+
+.header__wrapp_hide {
     display: none;
 }
 
 .header__btn {
+    text-decoration: none;
     display: inline-block;
     font-size: 12px;
     height: 100%;
@@ -31,4 +40,33 @@
 .header__btn_signin {
     color: white;
     background-color: black;
+}
+
+.header__link {
+    text-decoration: none;
+    color: black;
+    margin-left: 20px;
+    align-items: center;
+    font-size: 14px;
+    line-height: 1.29;
+}
+
+.header__link:hover {
+    opacity: .6;
+}
+
+.header__account-link {
+    position: relative;
+    margin-left: 50px;
+    margin-right: 30px;
+}
+
+.header__acc-img {
+    position: absolute;
+    background-color: #F9F9F9;
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    right: -60px;
+    top: -7px;
 }

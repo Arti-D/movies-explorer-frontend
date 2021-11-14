@@ -1,8 +1,15 @@
 import React from "react";
+import { useLocation } from "react-router";
 
 function Footer() {
+    const location = useLocation();
+    console.log(location);
+    const footerDisplay = (
+        `footer ${location.pathname === "/signin" || location.pathname === "/signup" ? 'footer_hidden' : ''}`
+    )
+    
     return (
-        <footer className="component footer">
+        <footer className={footerDisplay}>
             <div className="content">
                 <p className="footer__about">Учебный проект Яндекс.Практикум х BeatFilm.</p>
                 <div className="footer__main">

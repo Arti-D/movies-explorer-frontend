@@ -7,6 +7,10 @@
     padding-bottom: 20px;
 }
 
+.footer_hidden {
+    display: none;
+}
+
 .footer__about {
     text-align: center;
     color: #A0A0A0;

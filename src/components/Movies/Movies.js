@@ -1,12 +1,12 @@
 import React from "react";
+import SearchForm from "./SearchForm/SearchForm.js"
 import MoviesCardList from "../MoviesCardList/MoviesCardList.js";
-import SavedMovies from "../SavedMovies/SavedMovies.js"
 
 function Movies() {
     return (
         <section className="component movies">
+            <SearchForm />
             <MoviesCardList />
-            <SavedMovies />
             <button className="movies__more-btn">Еще</button>
         </section>
     )
