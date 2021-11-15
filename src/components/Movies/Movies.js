@@ -8,7 +8,7 @@ function Movies() {
             <div className="content">
                 <SearchForm />
                 <MoviesCardList />
-                <button className="movies__more-btn">Еще</button>
+                <button type="button" className="movies__more-btn">Еще</button>
             </div>
         </section>
     )
