@@ -1,0 +1,36 @@
+.search__form {
+
+}
+
+.search__wrap {
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.search__input {
+    width: 92.98%;
+    border: none;
+    border-radius: 4px;
+    background-color: #F9F9F9;
+    padding: 0;
+}
+
+.search__input::placeholder {
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 1.29;
+    padding-left: 22px;
+}
+
+.search__btn {
+    color: white;
+    padding: 13px 0px;
+    background-color: #000;
+    border-radius: 40px;
+    border: none;
+    min-width: 70px;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 1.5;
+}
