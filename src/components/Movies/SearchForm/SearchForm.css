@@ -11,17 +11,23 @@
 
 .search__input {
     width: 92.98%;
-    border: none;
+    border: 1px solid #F9F9F9;
+    box-sizing: border-box;
     border-radius: 4px;
     background-color: #F9F9F9;
-    padding: 0;
+    padding: 15px 22px;
+    transition: border .2s ease-in-out;
+}
+
+.search__input:focus {
+    outline: none;
+    border: 1px solid rgb(150, 141, 141);
 }
 
 .search__input::placeholder {
     font-weight: normal;
     font-size: 14px;
     line-height: 1.29;
-    padding-left: 22px;
 }
 
 .search__btn {
