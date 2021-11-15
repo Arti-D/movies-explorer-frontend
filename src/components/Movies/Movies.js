@@ -5,9 +5,11 @@ import MoviesCardList from "../MoviesCardList/MoviesCardList.js";
 function Movies() {
     return (
         <section className="component movies">
-            <SearchForm />
-            <MoviesCardList />
-            <button className="movies__more-btn">Еще</button>
+            <div className="content">
+                <SearchForm />
+                <MoviesCardList />
+                <button className="movies__more-btn">Еще</button>
+            </div>
         </section>
     )
 }
