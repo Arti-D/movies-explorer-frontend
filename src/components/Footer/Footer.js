@@ -16,13 +16,13 @@ function Footer() {
                     <p className="footer__copyright">&copy;Arti 2021</p>
                     <ul className="footer__socials">
                         <li className="footer__elem">
-                            <a className="footer__link" href="#">GitHub</a>
+                            <a target="_blank" rel="noreferrer" className="footer__link" href="https://github.com/Arti-D">GitHub</a>
                         </li>
                         <li className="footer__elem">
-                            <a className="footer__link" href="#">Telegram</a>
+                            <a target="_blank" rel="noreferrer" className="footer__link" href="https://t.me/arti_d">Telegram</a>
                         </li>
                         <li className="footer__elem">
-                            <a className="footer__link" href="#">Яндекс.Практикум</a>
+                            <a target="_blank" rel="noreferrer" className="footer__link" href="https://practicum.yandex.ru/web">Яндекс.Практикум</a>
                         </li>
                     </ul>
                 </div>

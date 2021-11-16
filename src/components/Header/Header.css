@@ -31,6 +31,10 @@ header_not-promo {
     padding: 8px 20px;
 }
 
+.header__btn:hover {
+    opacity: .6;
+}
+
 .header__btn_signup {
     color: black;
     background-color: #F3C1F8;

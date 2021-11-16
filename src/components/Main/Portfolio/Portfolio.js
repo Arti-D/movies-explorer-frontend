@@ -8,15 +8,15 @@ function Portfolio() {
                 <ul className="portfolio__list">
                     <li className="portfolio__project">
                         <p className="portfolio__project-name">Статичный сайт</p>
-                        <a className="portfolio__link" href="#"></a>
+                        <a target="_blank" rel="noreferrer" className="portfolio__link" href="https://arti-d.github.io/how-to-learn/"></a>
                     </li>
                     <li className="portfolio__project">
                         <p className="portfolio__project-name">Адаптивный сайт</p>
-                        <a className="portfolio__link" href="#"></a>
+                        <a target="_blank" rel="noreferrer" className="portfolio__link" href="https://arti-d.github.io/russian-travel/index.html"></a>
                     </li>
                     <li className="portfolio__project">
                         <p className="portfolio__project-name">Одностраничное приложение</p>
-                        <a className="portfolio__link" href="#"></a>
+                        <a target="_blank" rel="noreferrer" className="portfolio__link" href="https://mesto.arti.nomoredomains.club"></a>
                     </li>
                 </ul>
             </div>
