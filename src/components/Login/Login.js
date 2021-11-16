@@ -8,6 +8,7 @@ function Login() {
             btnText="Войти"
             question="Ещё не зарегистрированы?"
             linkText="Регистрация"
+            linkPath="/signup"
         />
     )
 }

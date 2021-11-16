@@ -1,5 +1,6 @@
 import React, { Profiler } from 'react';
 import { Route, Switch, useHistory } from "react-router-dom";
+import { useLocation } from "react-router";
 import { withRouter } from "react-router-dom";
 import './App.css';
 // ИМПОРТ КОМПОНЕНТОВ
@@ -15,6 +16,25 @@ import Profile from '../Profile/Profile.js'
 
 function App() {
   const [loggedIn, setLoggedIn] = React.useState(false);
+  const [isFooterVisible, setFooterVisible] = React.useState(true)
+
+  
+  const location = useLocation()
+
+
+
+  function handleFooterVisability() {
+    if (location.pathname === "/saved-movies" || location.pathname === "/movies" || location.pathname === "/") {
+      setFooterVisible(true)
+    } else {
+      setFooterVisible(false)
+    }
+  };
+
+  React.useEffect(() => {
+    handleFooterVisability()
+  });
+
   return (
     <div className="page">
       <Header isLoggedIn={loggedIn}/>
@@ -32,13 +52,13 @@ function App() {
           <SavedMovies />
         </Route>
         <Route path="/profile">
-          <Profile />
+          <Profile profileName="Artemis"/>
         </Route>
         <Route path="/">
           <Main />
         </Route>
       </Switch>
-      <Footer />
+      {isFooterVisible && <Footer />}
     </div>
   );
 }

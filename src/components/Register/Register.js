@@ -8,6 +8,7 @@ function Register() {
         btnText="Зарегистрироваться"
         question="Уже зарегистрировались?"
         linkText="Войти"
+        linkPath="/signin"
         >
             <span className="form__placeholder">Имя</span>
             <input className="form__input" type="text" />
