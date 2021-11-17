@@ -1,6 +1,56 @@
+.error {
+    padding-top: 35vh;
+}
+
+.error__info {
+    text-align: center;
+}
+
 .error__status {
     font-weight: normal;
     font-size: 140px;
     line-height: 1.2;
-    text-align: center;
+    margin: 0;
+}
+
+.error__message {
+    margin: 0;
+}
+
+.error__btn {
+    display: block;
+    background-color: #fff;
+    border: none;
+    padding: 0;
+    font-size: 14px;
+    margin: 0 auto;
+    margin-top: 184px;
+}
+
+.error__btn:hover {
+    opacity: .6;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .error {
+        padding-top: 40vh;
+    }
+}
+
+@media (max-width: 440px) {
+    .error {
+        padding-top: 43.3vh;
+    }
+    .error__status {
+        font-size: 80px;
+    }
+
+    .error__message {
+        font-size: 12px;
+    }
+
+    .error__btn {
+        margin-top: 284px;
+    }
 }

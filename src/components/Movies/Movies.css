@@ -17,6 +17,10 @@
     padding-bottom: 80px;
 }
 
+.movies__more-btn_hidden {
+    visibility: hidden;
+}
+
 @media (max-width: 440px) {
     .movies__more-btn {
         max-width: 240px;

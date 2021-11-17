@@ -12,6 +12,7 @@ import Header from '../Header/Header.js'
 import Movies from '../Movies/Movies.js'
 import SavedMovies from '../SavedMovies/SavedMovies.js';
 import Profile from '../Profile/Profile.js'
+import ErrorPage from '../ErrorPage/ErrorPage';
 //
 
 function App() {
@@ -20,8 +21,6 @@ function App() {
 
   
   const location = useLocation()
-
-
 
   function handleFooterVisability() {
     if (location.pathname === "/saved-movies" || location.pathname === "/movies" || location.pathname === "/") {
@@ -34,6 +33,7 @@ function App() {
   React.useEffect(() => {
     handleFooterVisability()
   });
+
 
   return (
     <div className="page">
@@ -53,6 +53,9 @@ function App() {
         </Route>
         <Route path="/profile">
           <Profile profileName="Artemis"/>
+        </Route>
+        <Route path="/error">
+          <ErrorPage status={"404"} message="not found"/>
         </Route>
         <Route path="/">
           <Main />

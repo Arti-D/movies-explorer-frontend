@@ -18,7 +18,9 @@ function SavedMovies() {
                 <ul className="movie-list__list">
                     {renderCards()}
                 </ul>
-                <button type="button" className="movies__more-btn">Еще</button>
+                <div className="movies__btn-container">
+                    <button type="button" className="movies__more-btn movies__more-btn_hidden">Еще</button>
+                </div>
             </div>
         </section>
     )

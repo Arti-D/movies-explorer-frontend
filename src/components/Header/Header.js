@@ -6,8 +6,9 @@ import accountIcon from "../../images/account.svg";
 
 function Header(props) {
     const location = useLocation();
+    
     const headerVisibility = (
-        `header ${location.pathname === '/signin' || location.pathname ==='/signup' ? 'header_hidden' : ''}`
+        `header ${location.pathname === '/signin' || location.pathname ==='/signup' || location.pathname ==='/error' ? 'header_hidden' : ''}`
     )
     const headerLocationClassName = (
         `${location.pathname === '/' ? 'header_promo' : 'header_not-promo'}`

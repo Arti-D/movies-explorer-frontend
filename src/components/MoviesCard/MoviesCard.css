@@ -43,12 +43,26 @@
     font-weight: normal;
     font-size: 12px;
     line-height: 0.92;
+    position: relative;
 }
 
-.movie__save-btn_active {
+.movie__save-btn:hover {
+    opacity: .6;
+    cursor: pointer;
+}
+
+.movie__save-btn_active::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 3;
     background-color: #FF4062;
     background-image: url('../../images/savedicon.svg');
     background-repeat: no-repeat;
     background-size: 8px 4.5px;
     background-position: center;
+    border-radius: 30px;
 }

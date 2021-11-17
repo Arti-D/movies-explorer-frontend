@@ -4,12 +4,9 @@
 
 @media (max-width: 800px){
     .content {
-        padding: 0 6.5%;
+        padding: 0 3.9%;
     }
 
-    .content_movies {
-        padding: 0 6.5%;
-    }
 }
 
 @media (max-width: 440px) {

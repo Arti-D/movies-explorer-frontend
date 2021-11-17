@@ -1,6 +1,7 @@
 import React from "react";
 
 function MoviesCard(props) {
+
     return (
         <li className="movie">
             <div className="movie__info">
@@ -8,7 +9,7 @@ function MoviesCard(props) {
                 <span className="movie__duration">{props.duration}</span>
             </div>
             <img alt={props.name} src={props.img} className="movie__img" />
-            <button type="button" className="movie__save-btn">Сохранить</button>
+            <button  type="button" className="movie__save-btn">Сохранить</button>
         </li>
     )
 }
