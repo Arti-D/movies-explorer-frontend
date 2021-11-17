@@ -52,6 +52,7 @@
     background-color: #FFF;
     width: 100%;
     border: 0;
+    font-size: 13px;
 }
 
 .profile__btn:hover {
@@ -66,4 +67,32 @@
 
 .profile__btn-wrap {
     margin-top: 187px;
+}
+
+
+@media (max-width: 880px) {
+    .profile {
+        width: 53.38%;
+        padding-top: 23vh;
+    }
+
+    .profile__title {
+        margin-bottom: 96px;
+    }
+}
+
+@media (max-width: 550px) {
+    .profile {
+        padding-top: 70px;
+        width: 81.25%;
+        padding-bottom: 40px;
+    }
+
+    .profile__title {
+        margin-bottom: 80px;
+    }
+
+    .profile__btn-wrap {
+        margin-top: 48.72vh;
+    }
 }
