@@ -13,3 +13,10 @@
     padding-bottom: 23px;
     margin: 0;
 }
+
+@media (max-width: 440px) {
+    .component__title {
+        font-size: 18px;
+        padding-bottom: 28px;
+    }
+}

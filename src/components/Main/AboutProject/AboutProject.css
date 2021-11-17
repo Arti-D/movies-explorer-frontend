@@ -114,6 +114,10 @@
 }
 
 @media (max-width: 440px) {
+    .about-project {
+        padding-top: 70px;
+        padding-bottom: 70px;
+    }
     .about-project__text-title {
         font-size: 18px;
     }
