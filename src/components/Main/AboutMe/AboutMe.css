@@ -69,6 +69,10 @@
 }
 
 @media (max-width: 768px) {
+    .about-me {
+        padding-top: 90px;
+        padding-bottom: 45px;
+    }
     .about-me__avatar {
         height: 307px;
         width: 255px;
@@ -88,6 +92,10 @@
 }
 
 @media (max-width: 700px) {
+    .about-me {
+        padding-top: 70px;
+        table-layout: 35px;
+    }
     .about-me__profile {
         flex-direction: column-reverse;
     }
@@ -112,8 +120,3 @@
         margin-top: 40px;
     }
 }
-
-/* @media () {
-    
-} */
-
