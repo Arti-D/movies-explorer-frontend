@@ -43,6 +43,8 @@
 }
 
 .about-project__time {
+    font-weight: 400;
+    font-size: 14px;
     text-align: center;
     margin: 0;
     padding: 9px 0;
@@ -64,4 +66,59 @@
     font-size: 14px;
     line-height: 1.2;
     text-align: center;
+}
+
+@media (min-width: 740px) and (max-width: 940px) {
+    .about-project__text-block {
+        max-width: 320px;
+    }
+}
+
+@media (max-width: 768px) {
+    .about-project {
+        padding-top: 90px;
+        padding-bottom: 90px;
+    }
+
+    .about-project__timeline {
+        margin-top: 90px;
+    }
+}
+
+@media (max-width: 739px) {
+    .about-project__text-wrapp {
+        flex-direction: column;
+    }
+
+    .about-project__text-block:first-child {
+        margin-bottom: 56px;
+    }
+
+    .about-project__time {
+        font-size: 11px;
+    }
+
+    .about-project__type {
+        font-size: 11px;
+        margin-top: 10px;
+    }
+
+    .about-project__back {
+        width: 31%;
+    }
+
+    .about-project__front {
+        width: 69%;
+    }
+
+}
+
+@media (max-width: 440px) {
+    .about-project__text-title {
+        font-size: 18px;
+    }
+
+    .about-project__annotation {
+        font-size: 11px;
+    }
 }
