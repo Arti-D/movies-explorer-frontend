@@ -11,6 +11,9 @@
 }
 
 .about-me__info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     width: 52.63%;
 }
 
@@ -38,7 +41,8 @@
 }
 
 .about-me__avatar {
-    width: 23.7%;
+    width: 270px;
+    height: 327px;
     border-radius: 10px;
     object-fit: cover;
 }
@@ -47,7 +51,6 @@
     list-style: none;
     padding: 0;
     display: flex;
-    margin-top: 100px;
     margin-bottom: 0;
 }
 
@@ -64,3 +67,53 @@
 .about-me__link:hover {
     opacity: .6;
 }
+
+@media (max-width: 768px) {
+    .about-me__avatar {
+        height: 307px;
+        width: 255px;
+    }
+
+    .about-me__name {
+        font-size: 40px;
+    }
+
+    .about-me__annotation {
+        font-size: 12px;
+        margin-bottom: 20px;
+    }
+    .about-me__about {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 700px) {
+    .about-me__profile {
+        flex-direction: column-reverse;
+    }
+
+    .about-me__avatar {
+        margin: 0 auto;
+        margin-bottom: 40px;
+        width: 292px;
+        height: 357px;
+    }
+
+    .about-me__info {
+        margin: 0 auto;
+        width: 292px;
+    }
+
+    .about-me__about {
+        margin: 0;
+    }
+
+    .about-me__socials {
+        margin-top: 40px;
+    }
+}
+
+/* @media () {
+    
+} */
+
