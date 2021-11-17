@@ -67,6 +67,10 @@
 @media (max-width: 480px) {
     .portfolio__link  {
         font-size: 18px;
-        
+    }
+
+    .portfolio {
+        padding-top: 35px;
+        padding-bottom: 70px;
     }
 }

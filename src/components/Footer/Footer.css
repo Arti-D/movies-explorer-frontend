@@ -49,3 +49,34 @@
 .footer__copyright {
     margin: 0;
 }
+
+@media (max-width: 768px) {
+    .footer {
+        padding-top: 80px;
+    }
+}
+
+@media (max-width: 440px) {
+    .footer {
+        padding-bottom: 10px;
+    }
+    .footer__main {
+        flex-direction: column-reverse;
+        text-align: center;
+    }
+    .footer__elem {
+        margin: 12px 0 0 0;
+    }
+    .footer__socials {
+        flex-direction: column;
+    }
+
+    .footer__copyright {
+        margin-top: 30px;
+        color:#A0A0A0;
+    }
+
+    .footer__about {
+        font-size: 12px;
+    }
+}

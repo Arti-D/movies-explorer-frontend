@@ -65,11 +65,13 @@
 @media (max-width: 768px) {
     .promo {
         padding-top: 140px;
+        padding-bottom: 76px;
     }
     .promo__content-wrapp {
         display: flex;
         flex-direction: column-reverse;
         align-content: center;
+        margin-bottom: 90px;
     }
 
     .promo__title {

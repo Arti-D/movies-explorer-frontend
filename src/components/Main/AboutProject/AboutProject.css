@@ -125,4 +125,8 @@
     .about-project__annotation {
         font-size: 11px;
     }
+
+    .about-project__timeline {
+        margin-top: 60px;
+    }
 }
