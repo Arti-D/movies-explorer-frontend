@@ -11,7 +11,7 @@ function Register() {
         linkPath="/signin"
         >
             <span className="form__placeholder">Имя</span>
-            <input className="form__input" type="text" />
+            <input required minLength="2" maxLength="30" className="form__input" type="text" />
             <span className="error"></span>
         </Form>
     )

@@ -54,11 +54,11 @@
     display: block;
     width: 100%;
     border: 0;
-    padding: 0;
     color: white;
     background: #000000;
     border-radius: 3px;
     padding: 14px 0;
+    font-size: 14px;
 }
 
 .form__question {
@@ -81,4 +81,39 @@
 .form__link:hover {
     opacity: .6;
     cursor: pointer;
+}
+
+.form__icon {
+    margin-bottom: 40px;
+}
+
+@media (max-width: 870px) {
+    .form {
+        width: 51.56%;
+        padding-top: 22.66vh;
+    }
+}
+
+@media (max-width: 560px) {
+    .form__question {
+        font-size: 12px;
+    }
+
+    .form__link {
+        font-size: 12px;
+    }
+
+    .form {
+        width: 81.25%;
+        padding-top: 56px;
+    }
+
+    .form__icon {
+        display: block;
+        margin: 0 auto 50px;
+    }
+
+    .form__greetings {
+        text-align: center;
+    }
 }

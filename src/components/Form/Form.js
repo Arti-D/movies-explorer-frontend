@@ -11,10 +11,10 @@ function Form(props) {
                 <div className="form__wrapp">
                     {props.children}
                     <span className="form__placeholder">Email</span>
-                    <input className="form__input" type="email" />
+                    <input required minLength="2" className="form__input" type="email" />
                     <span className="error"></span>
                     <span className="form__placeholder">Пароль</span>
-                    <input className="form__input" type="password" />
+                    <input required minLength="2" className="form__input" type="password" />
                     <span className="error"></span>
                 </div>
                 <button className="form__btn" type="submit">
