@@ -13,9 +13,9 @@ function Header(props) {
         `${location.pathname === '/' ? 'header_promo' : 'header_not-promo'}`
     );
 
-    const menu = document.querySelector(".header__menu");
-    const navigation = document.querySelector(".header__nav")
     function handleNavBtn() {
+        const menu = document.querySelector(".header__menu");
+        const navigation = document.querySelector(".header__nav")
         if (menu.classList.contains("header__menu_active") || navigation.classList.contains("header__nav_active")) {
             menu.classList.remove("header__menu_active")
             navigation.classList.remove("header__nav_active")

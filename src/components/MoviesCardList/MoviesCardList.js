@@ -3,7 +3,6 @@ import MoviesCard from "../MoviesCard/MoviesCard";
 import movieImg from "../../images/в погоне за бенкси.jpg"
 
 function MoviesCardList() {
-    
     function renderCards() {
         const cards = []
         for (let i = 0; i < 12; i++) {

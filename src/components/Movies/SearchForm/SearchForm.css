@@ -6,11 +6,10 @@
 .search__wrap {
     display: flex;
     justify-content: space-between;
-
 }
 
 .search__input {
-    width: 92.98%;
+    width: 100%;
     border: 1px solid #F9F9F9;
     box-sizing: border-box;
     border-radius: 4px;
@@ -40,10 +39,25 @@
     font-weight: 500;
     font-size: 12px;
     line-height: 1.5;
+    margin-left: 10px;
+}
+
+.search__btn:hover {
+    cursor: pointer;
+    opacity: .6;
 }
 
 .search__row {
     box-sizing: border-box;
     border: 1px solid #E8E8E8;
     margin-top: 40px;
+}
+
+@media (max-width: 768px) {
+    .search__input {
+        padding: 13px 20px;
+    }
+    .search__btn {
+        font-size: 12px;
+    }
 }

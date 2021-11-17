@@ -3,7 +3,6 @@ import { useLocation } from "react-router";
 
 function Footer() {
     const location = useLocation();
-    console.log(location);
     const footerDisplay = (
         `footer ${location.pathname === "/signin" || location.pathname === "/signup" ? 'footer_hidden' : ''}`
     )
