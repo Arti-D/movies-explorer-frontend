@@ -2,14 +2,18 @@ import React from "react";
 import SearchForm from "./SearchForm/SearchForm.js"
 import MoviesCardList from "../MoviesCardList/MoviesCardList.js";
 
-function Movies() {
+function Movies(props) {
     return (
         <section className="component movies">
             <div className="content content_movies">
-                <SearchForm />
-                <MoviesCardList />
+                <SearchForm handleSearchBtn={props.handleSearchBtn}/>
+                <MoviesCardList
+                movies={props.movies}
+                amountOfMovies={props.amountOfMovies}
+                />
+                {props.isError && <p className="movies__error">Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз</p>}
                 <div className="movies__btn-container">
-                    <button type="button" className="movies__more-btn">Еще</button>
+                    {props.isMoreBtnVisible && <button onClick={props.moreBtn} type="button" className="movies__more-btn">Еще</button>}
                 </div>
             </div>
         </section>

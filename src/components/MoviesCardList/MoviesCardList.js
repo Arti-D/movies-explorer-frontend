@@ -2,19 +2,19 @@ import React from "react";
 import MoviesCard from "../MoviesCard/MoviesCard";
 import movieImg from "../../images/в погоне за бенкси.jpg"
 
-function MoviesCardList() {
-    function renderCards() {
-        const cards = []
-        for (let i = 0; i < 12; i++) {
-            cards.push(<MoviesCard name="В погоне за Бенкси" duration="27 минут" img={movieImg} />)
-        }
-        return cards
-    }
-
+function MoviesCardList(props) {
     return (
         <section className="movie-list">
                 <ul className="movie-list__list">
-                    {renderCards()}
+                    {console.log("from card:", props.movies)}
+                    {props.movies && (props.movies.slice(0, props.amountOfMovies).map((item) => (
+                        <MoviesCard
+                            movie={item}
+                            onCardSave={props.onCardSave}
+                            key={item.id}
+                            onCardDelete={props.onCardDelete}
+                        ></MoviesCard>
+                    )))}
                 </ul>
         </section>
     )
