@@ -19,7 +19,7 @@ function Profile(props) {
                 </div>
                 <div className="profile__btn-wrap">
                     <button className="profile__btn" type="submit">Редактировать</button>
-                    <button className="profile__btn" type="submit">Выйти из аккаунта</button>
+                    <button onClick={props.handleLogOut} className="profile__btn" type="button">Выйти из аккаунта</button>
                 </div>
             </form>
 

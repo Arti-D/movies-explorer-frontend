@@ -44,7 +44,7 @@ export const checkToken = () => {
 };
 
 export const logOut = () => {
-  return fetch(`${BASE_URL}/logOut`, {
+  return fetch(`${BASE_URL}/logout`, {
     method: "HEAD",
     headers: {
       Accept: "application/json",

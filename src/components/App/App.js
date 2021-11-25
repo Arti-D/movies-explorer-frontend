@@ -146,6 +146,16 @@ function App() {
       });
   }
 
+  function handleLogOut() {
+    auth
+      .logOut()
+      .then((res) => {
+        if(res) {
+          setLoggedIn(false)
+        }
+      })
+      .catch((err) => console.log(err))
+  }
 
   return (
     <div className="page">
@@ -177,6 +187,7 @@ function App() {
         loggedIn={loggedIn}
         path="/profile"
         component={Profile}
+        handleLogOut={handleLogOut}
         profileName="Artemis"
         ></ProtectedRoute>
         <Route path="/error">
