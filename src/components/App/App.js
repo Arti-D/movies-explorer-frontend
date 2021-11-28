@@ -1,3 +1,4 @@
+import React from "react";
 import { Route, Switch, useHistory } from "react-router-dom";
 import { useLocation } from "react-router";
 import { withRouter } from "react-router-dom";
@@ -14,11 +15,9 @@ import SavedMovies from '../SavedMovies/SavedMovies.js';
 import Profile from '../Profile/Profile.js'
 import ErrorPage from '../ErrorPage/ErrorPage';
 import ProtectedRoute from "../../utils/ProtectedRoute.js";
-import * as auth from '../../utils/auth.js'
-//
-import getAllMovies from '../../utils/MoviesApi.js';
-import React from "react";
-
+import * as auth from '../../utils/auth.js';
+import * as mainApi from '../../utils/MainApi';
+import * as moviesApi from '../../utils/MoviesApi';
 
 function App() {
   const [loggedIn, setLoggedIn] = React.useState(false);
@@ -29,7 +28,8 @@ function App() {
   // FIRST RENDER
   React.useEffect(() => {
     handleFooterVisability();
-    checkToken()
+    checkToken();
+    updateUserInfo();
     window.addEventListener('resize', updateAmountOfMovies)
     return () => {
       window.removeEventListener('resize', updateAmountOfMovies)
@@ -81,7 +81,7 @@ function App() {
 
   // ПОИСК ФИЛЬМОВ
   function movieSearch() {
-    getAllMovies()
+    moviesApi.getAllMovies()
     .then(movies => {
       localStorage.setItem("movies", JSON.stringify(movies))
       setMovies(movies)
@@ -157,49 +157,70 @@ function App() {
       .catch((err) => console.log(err))
   }
 
+  // ДАННЫЕ ПОЛЬЗОВАТЕЛЯ
+  function updateUserInfo() {
+    mainApi
+      .getUserInfo()
+      .then((data) => {
+        setCurrentUser(data.data)
+        console.log("апдейт юзер инфо", data.data)
+      })
+      .catch((err) => console.log(err))
+  }
+
+  function handleRefactorUser(name, email) {
+    mainApi
+      .refactorUser(name, email)
+      .then((res) => {
+        console.log("апдейтед юзер", res.data)
+        setCurrentUser(res.data)
+      })
+  }
+
   return (
     <div className="page">
       <CurrentUserContext.Provider value={currentUser}>
-      <Header isLoggedIn={loggedIn}/>
-      <Switch>
-        <Route path="/signin">
-          <Login onSubmit={handleAuthorization}/>
-        </Route>
-        <Route path="/signup">
-          <Register onSubmit={handleRegistration}/>
-        </Route>
-        <ProtectedRoute
-        loggedIn={loggedIn}
-        path="/movies"
-        component={Movies}
-        amountOfMovies={amountOfMovies}
-        movies={movies}
-        handleSearchBtn={handleSearchBtn}
-        isError={isCardError}
-        moreBtn={handleMoreCardBtn}
-        isMoreBtnVisible={isMoreBtnVisible}
-        ></ProtectedRoute>
-        <ProtectedRoute
-        path="/saved-movies"
-        component={SavedMovies}
-        ></ProtectedRoute>
-        <ProtectedRoute
-        loggedIn={loggedIn}
-        path="/profile"
-        component={Profile}
-        handleLogOut={handleLogOut}
-        profileName="Artemis"
-        ></ProtectedRoute>
-        <Route path="/error">
-          <ErrorPage status={"404"} message="not found"/>
-        </Route>
-        <ProtectedRoute
-        loggedIn={loggedIn}
-        path="/"
-        component={Main}
-        ></ProtectedRoute>
-      </Switch>
-      {isFooterVisible && <Footer />}
+        <Header isLoggedIn={loggedIn}/>
+        <Switch>
+          <Route path="/signin">
+            <Login onSubmit={handleAuthorization}/>
+          </Route>
+          <Route path="/signup">
+            <Register onSubmit={handleRegistration}/>
+          </Route>
+          <ProtectedRoute
+          loggedIn={loggedIn}
+          path="/movies"
+          component={Movies}
+          amountOfMovies={amountOfMovies}
+          movies={movies}
+          handleSearchBtn={handleSearchBtn}
+          isError={isCardError}
+          moreBtn={handleMoreCardBtn}
+          isMoreBtnVisible={isMoreBtnVisible}
+          ></ProtectedRoute>
+          <ProtectedRoute
+          path="/saved-movies"
+          component={SavedMovies}
+          ></ProtectedRoute>
+          <ProtectedRoute
+          loggedIn={loggedIn}
+          path="/profile"
+          component={Profile}
+          handleLogOut={handleLogOut}
+          refactorUser={handleRefactorUser}
+          profileName="Artemis"
+          ></ProtectedRoute>
+          <Route path="/error">
+            <ErrorPage status={"404"} message="not found"/>
+          </Route>
+          <ProtectedRoute
+          loggedIn={loggedIn}
+          path="/"
+          component={Main}
+          ></ProtectedRoute>
+        </Switch>
+        {isFooterVisible && <Footer />}
       </CurrentUserContext.Provider>
     </div>
   );
