@@ -10,6 +10,8 @@ function Movies(props) {
                 <MoviesCardList
                 movies={props.movies}
                 amountOfMovies={props.amountOfMovies}
+                handleSaveMovie={props.handleSaveMovie}
+                isSaved={props.isSaved}
                 />
                 {props.isError && <p className="movies__error">Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз</p>}
                 <div className="movies__btn-container">

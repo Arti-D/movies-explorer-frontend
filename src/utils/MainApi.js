@@ -32,3 +32,62 @@ export const refactorUser = (name, email) => {
     credentials: "include",
   }).then((res) => checkResponse(res))
 }
+
+export const saveMovie = ({
+  country,
+  director,
+  duration,
+  year,
+  description,
+  image,
+  trailer,
+  thumbnail,
+  movieId,
+  nameRU,
+  nameEN,
+}) => {
+  return fetch(`${BASE_URL}/movies`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      country: country,
+      director: director,
+      duration: duration,
+      year: year,
+      description: description,
+      image: image,
+      trailer: trailer,
+      thumbnail: thumbnail,
+      movieId: movieId,
+      nameRU: nameRU,
+      nameEN: nameEN,
+    }),
+    credentials: "include",
+  }).then((res) => checkResponse(res));
+
+}
+
+export const deleteMovie = (movieId) => {
+  return fetch(`${BASE_URL}/movies/${movieId}`, {
+    method: "DELETE",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  }).then((res) => checkResponse(res));
+}
+
+export const getSavedMovies = () => {
+  return fetch(`${BASE_URL}/movies`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  }).then((res) => checkResponse(res))
+}

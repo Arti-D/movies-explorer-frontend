@@ -1,14 +1,34 @@
 import React from "react";
-const siteUrl = "https://api.nomoreparties.co"
+import { useLocation } from "react-router";
+const siteUrl = "https://api.nomoreparties.co";
+
 function MoviesCard(props) {
+    const movie = props.movie;
+    const location = useLocation()
+
+    const btnClassName = (
+        `movie__save-btn ${ movie.isSaved ? 'movie__save-btn_active' : ''}`
+    )
+
+    function handleSaveMovie(e){
+        e.preventDefault();
+        props.handleSaveMovie(movie)
+        movie.isSaved = !movie.isSaved
+    }
+
     return (
         <li className="movie">
             <div className="movie__info">
-                <h2 className="movie__title">{props.movie.nameRU}</h2>
-                <span className="movie__duration">{`${props.movie.duration} мин`}</span>
+                <h2 className="movie__title">{movie.nameRU}</h2>
+                <span className="movie__duration">{`${movie.duration} мин`}</span>
             </div>
-            <img alt={`обложка ${props.movie.nameRU}`} src={siteUrl + props.movie.image.url} className="movie__img" />
-            <button  type="button" className="movie__save-btn">Сохранить</button>
+            <img 
+            alt={`обложка ${movie.nameRU}`} 
+            src={location.pathname === "/saved-movies" ? movie.image : siteUrl + movie.image.url} 
+            className="movie__img" />
+            <button onClick={handleSaveMovie} type="button" className={btnClassName}>
+                {movie.isSaved ? "" : "Сохранить"}
+            </button>
         </li>
     )
 }

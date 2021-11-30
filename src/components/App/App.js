@@ -30,6 +30,7 @@ function App() {
     handleFooterVisability();
     checkToken();
     updateUserInfo();
+    getSavedMovies();
     window.addEventListener('resize', updateAmountOfMovies)
     return () => {
       window.removeEventListener('resize', updateAmountOfMovies)
@@ -78,26 +79,7 @@ function App() {
       setAmountOfMovies(amountOfMovies + 3)
     }
   }
-
-  // ПОИСК ФИЛЬМОВ
-  function movieSearch() {
-    moviesApi.getAllMovies()
-    .then(movies => {
-      localStorage.setItem("movies", JSON.stringify(movies))
-      setMovies(movies)
-    }).catch((err) => setCardError(true))
-  }
-
-  function handleSearchBtn() {
-    setIsSearchBtnClicked(true)
-    if(localStorage.getItem("movies")) {
-      let movies = JSON.parse(localStorage.getItem("movies")) 
-      setMovies(movies)
-    } else {
-      movieSearch()
-    }
-  }
-
+  
   function handleFooterVisability() {
     if (location.pathname === "/saved-movies" || location.pathname === "/movies" || location.pathname === "/") {
       setFooterVisible(true)
@@ -105,6 +87,114 @@ function App() {
       setFooterVisible(false)
     }
   };
+
+  // СОХРАНЕНИЕ ФИЛЬМОВ
+  const [savedMovies, setSavedMovies] = React.useState([])
+
+  function getSavedMovies() {
+    mainApi
+      .getSavedMovies()
+      .then((movies) => {
+        const savedMovies = movies.data.map((item) => {
+          item.isSaved = true;
+          return item
+        })
+        setSavedMovies(savedMovies)
+        localStorage.setItem("savedMovies", savedMovies)
+      })
+  }
+
+  function handleSaveMovie(movie) {
+    const isSaved = movie.isSaved;
+    if (!isSaved) {
+      mainApi
+        .saveMovie({
+          country: movie.country,
+          director: movie.director,
+          duration: String(movie.duration),
+          year: movie.year,
+          description: movie.description,
+          image: `https://api.nomoreparties.co${movie.image.url}`,
+          trailer: movie.trailerLink,
+          thumbnail: `https://api.nomoreparties.co${movie.image.url}`,
+          movieId: String(movie.id),
+          nameRU: movie.nameRU,
+          nameEN: movie.nameEN,
+        }).then((savedCard) => {
+          savedCard.isSaved = true;
+          setSavedMovies([...savedMovies, savedCard])
+        }).catch((err) => console.log(err))
+    } else {
+      const card = findMovie(movie)
+      deleteSavedMovie(card);
+    }
+  }
+
+
+  function findMovie(movie) {
+    const card = savedMovies.find((item) => item.movieId === String(movie.id))
+    return card
+  }
+
+  function deleteSavedMovie(movie) {
+    mainApi
+      .deleteMovie(movie._id)
+      .then((data) => {
+        setSavedMovies((state) => state.filter((c) => c._id !== movie._id));
+        deleteMovieFromMovies(movie);
+      })
+      .catch((err) => console.log(err))
+  }
+
+  function deleteMovieFromMovies(movie) {
+    const newMovies = movies.map((item) => {
+      if(String(item.id) === movie.movieId) {
+        item.isSaved = false;
+        return item
+      } else {
+        return item
+      }
+    })
+    setMovies(newMovies)
+  }
+  // ПОИСК ФИЛЬМОВ
+  function movieSearch() {
+    moviesApi.getAllMovies()
+    .then(movies => {
+      const isSavedMovies = handleIsSaved(movies)
+      localStorage.setItem("movies", JSON.stringify(isSavedMovies))
+      setMovies(isSavedMovies)
+    }).catch((err) => setCardError(true))
+  }
+
+  // сохранен ли фильм
+  function handleIsSaved(movies) {
+    const isSavedMovies = movies.map((mov) => {
+      return isSavedMovie(mov)
+    });
+    return isSavedMovies
+  }
+
+  function isSavedMovie(item) {
+    const isSaved = savedMovies.some((i) => i.movieId === String(item.id))
+    if(isSaved) {
+      item.isSaved = true
+    } else {
+      item.isSaved = false
+    }
+    return item;
+  }
+
+  function handleSearchBtn() {
+    setIsSearchBtnClicked(true)
+    if(localStorage.getItem("movies")) {
+      let movies = JSON.parse(localStorage.getItem("movies"))
+      const isSavedMovies = handleIsSaved(movies);
+      setMovies(isSavedMovies)
+    } else {
+      movieSearch()
+    }
+  }
 
   // АВТОРИЗАЦИЯ
   const [currentUser, setCurrentUser] = React.useState({})
@@ -198,10 +288,15 @@ function App() {
           isError={isCardError}
           moreBtn={handleMoreCardBtn}
           isMoreBtnVisible={isMoreBtnVisible}
+          handleSaveMovie={handleSaveMovie}
+          isSaved={handleIsSaved}
           ></ProtectedRoute>
           <ProtectedRoute
+          loggedIn={loggedIn}
           path="/saved-movies"
           component={SavedMovies}
+          handleSaveMovie={deleteSavedMovie}
+          movies={savedMovies}
           ></ProtectedRoute>
           <ProtectedRoute
           loggedIn={loggedIn}
