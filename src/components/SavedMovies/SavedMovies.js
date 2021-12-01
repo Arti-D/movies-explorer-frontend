@@ -1,4 +1,5 @@
 import React from "react";
+import Preloader from "../Movies/Preloader/Preloader";
 import SearchForm from "../Movies/SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 function SavedMovies(props) {
@@ -10,15 +11,14 @@ function SavedMovies(props) {
                 filter={props.filter}
                 handleIsShort={props.handleIsShort}
                 />
+                {props.isFetching ? <Preloader /> : 
                 <MoviesCardList
                 movies={props.movies}
                 amountOfMovies={props.movies.length}
                 handleSaveMovie={props.handleSaveMovie}
                 isSaved={true}
-                ></MoviesCardList>
-                <div className="movies__btn-container">
-                    <button type="button" className="movies__more-btn movies__more-btn_hidden">Еще</button>
-                </div>
+                isError={props.isError}
+                ></MoviesCardList>}
             </div>
         </section>
     )

@@ -23,10 +23,17 @@ import * as filterMovies from '../../utils/filterMovies.js'
 
 function App() {
   const [loggedIn, setLoggedIn] = React.useState(false);
-  const [isFooterVisible, setFooterVisible] = React.useState(true)
-
   const location = useLocation()
 
+  // ОБРАБОТКА ОШИБОК 
+  const [errorMessage, setErrorMessage] = React.useState("")
+  const [errorStatus, setErrorStatus] = React.useState("")
+
+  function errorHandler(err) {
+    setErrorMessage(`На сервере произошла ошибка: ${err.message}`);
+    setErrorStatus(err.status)
+    history.push("/error")
+  }
   // FIRST RENDER
   React.useEffect(() => {
     handleFooterVisability();
@@ -47,11 +54,21 @@ function App() {
   function handleMenu() {
     setIsMenuOpen(!isMenuOpen)
   }
-
   React.useEffect(() => {
     setIsMenuOpen(false)
   }, [location.pathname])
 
+  // ---------------FOOTER-------------
+  const [isFooterVisible, setFooterVisible] = React.useState(true)
+
+  function handleFooterVisability() {
+    if (location.pathname === "/saved-movies" || location.pathname === "/movies" || location.pathname === "/") {
+      setFooterVisible(true)
+    } else {
+      setFooterVisible(false)
+    }
+  };
+  
   // ОТОБРАЖЕНИЕ КАРТОЧЕК
   const [movies, setMovies] = React.useState([]);
   const [isCardError, setCardError] = React.useState(false);
@@ -93,18 +110,10 @@ function App() {
       setAmountOfMovies(amountOfMovies + 3)
     }
   }
-  
-  function handleFooterVisability() {
-    if (location.pathname === "/saved-movies" || location.pathname === "/movies" || location.pathname === "/") {
-      setFooterVisible(true)
-    } else {
-      setFooterVisible(false)
-    }
-  };
 
   // СОХРАНЕНИЕ ФИЛЬМОВ
   const [savedMovies, setSavedMovies] = React.useState([])
-  const [savedFilteredMovies, setSavedFilteredMovies] = React.useState([])
+  const [filteredMovies, setFilteredMovies] = React.useState([]);
   
   function handleSaveMovie(movie) {
     const isSaved = movie.isSaved;
@@ -122,11 +131,13 @@ function App() {
           movieId: String(movie.id),
           nameRU: movie.nameRU,
           nameEN: movie.nameEN,
-        }).then((savedCard) => {
+        })
+        .then((savedCard) => {
           savedCard.isSaved = true;
           setSavedMovies([...savedMovies, savedCard])
           localStorage.setItem("savedMovies", JSON.stringify(savedMovies))
-        }).catch((err) => console.log(err))
+        })
+        .catch((err) => errorHandler(err))
     } else {
       const card = findMovie(movie)
       deleteSavedMovie(card);
@@ -146,7 +157,7 @@ function App() {
         setSavedMovies((state) => state.filter((c) => c._id !== movie._id));
         deleteMovieFromMovies(movie);
       })
-      .catch((err) => console.log(err))
+      .catch((err) => errorHandler(err))
   }
 
   function deleteMovieFromMovies(movie) {
@@ -161,15 +172,20 @@ function App() {
     setMovies(newMovies)
   }
 
-  // ЗАПРОС ДАННЫХ ФИЛЬМОВ У СЕРВЕРА
+  // ЗАПРОС ДАННЫХ СЕРВЕРА
+  const [isFetching, setIsFetching] = React.useState(false);
+
   function movieSearch() {
+    setIsFetching(true)
     moviesApi
     .getAllMovies()
     .then(movies => {
       const isSavedMovies = handleIsSaved(movies)
       localStorage.setItem("movies", JSON.stringify(isSavedMovies))
       setMovies(isSavedMovies)
-    }).catch((err) => console.log(err))
+      setIsFetching(false)
+    })
+    .catch((err) => setCardError(true))
   }
   
   function getSavedMovies() {
@@ -181,19 +197,16 @@ function App() {
           return item
         })
         setSavedMovies(savedMovies)
-        console.log(savedMovies);
         localStorage.setItem("savedMovies", JSON.stringify(savedMovies))
       })
-      .catch((err) => console.log(err))
+      .catch((err) => setCardError(true))
   }
 
   // ПОИСК С ФИЛЬТРАМИ
-
   function handleSearchBtn(value) {
     setIsSearchBtnClicked(true)
     if(localStorage.getItem("movies")) {
       const films = filterMovies.filter(value, JSON.parse(localStorage.getItem("movies")), isShort)
-      console.log('films', films);
       const isSavedMovies = handleIsSaved(films);
       setMovies(isSavedMovies)
     } else {
@@ -206,21 +219,19 @@ function App() {
   function handleSearchSavedBtn(value) {
     if(localStorage.getItem("savedMovies")) {
       const films = filterMovies.filter(value, JSON.parse(localStorage.getItem("savedMovies")), isShort)
-      setSavedMovies(films)
+      setFilteredMovies(films)
     } else {
       getSavedMovies();
       const films = filterMovies.filter(value, savedMovies, isShort)
-      setSavedMovies(films)
+      setFilteredMovies(films)
     }
   }
+  // ФИЛЬТР КОРОТКОМЕТРАЖЕК
   
   const [isShort, setIsShort] = React.useState(false)
-
   function handleIsShort() {
-    console.log(isShort);
     setIsShort(!isShort)
-    console.log('rkbr');
-    console.log(isShort);
+    // console.log('boo', isShort);
   }
 
   // сохранен ли фильм
@@ -254,7 +265,7 @@ function App() {
           history.push("/movies");
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => errorHandler(err));
   }
 
   function handleAuthorization(email, password) {
@@ -266,7 +277,7 @@ function App() {
         history.push("/movies");
       })
       .catch((err) => {
-        console.log(err);
+        errorHandler(err)
       });
   }
 
@@ -277,7 +288,7 @@ function App() {
         history.push("/signin");
       })
       .catch((err) => {
-        console.log(err)
+        errorHandler(err)
       });
   }
 
@@ -289,7 +300,7 @@ function App() {
           setLoggedIn(false)
         }
       })
-      .catch((err) => console.log(err))
+      .catch((err) => errorHandler(err))
   }
 
   // ДАННЫЕ ПОЛЬЗОВАТЕЛЯ
@@ -300,7 +311,7 @@ function App() {
         setCurrentUser(data.data)
         console.log("апдейт юзер инфо", data.data)
       })
-      .catch((err) => console.log(err))
+      .catch((err) => errorHandler(err))
   }
 
   function handleRefactorUser(name, email) {
@@ -310,6 +321,7 @@ function App() {
         console.log("апдейтед юзер", res.data)
         setCurrentUser(res.data)
       })
+      .catch((err) => errorHandler(err))
   }
 
   return (
@@ -330,6 +342,7 @@ function App() {
           loggedIn={loggedIn}
           path="/movies"
           component={Movies}
+          isFetching={isFetching}
           amountOfMovies={amountOfMovies}
           movies={movies}
           handleSearchBtn={handleSearchBtn}
@@ -345,9 +358,11 @@ function App() {
           path="/saved-movies"
           component={SavedMovies}
           handleSaveMovie={deleteSavedMovie}
-          movies={savedMovies}
+          movies={filteredMovies}
+          isFetching={isFetching}
           handleSearchBtn={handleSearchSavedBtn}
           handleIsShort={handleIsShort}
+          isError={isCardError}
           ></ProtectedRoute>
           <ProtectedRoute
           loggedIn={loggedIn}
@@ -358,7 +373,7 @@ function App() {
           profileName="Artemis"
           ></ProtectedRoute>
           <Route path="/error">
-            <ErrorPage status={"404"} message="not found"/>
+            <ErrorPage status={errorStatus} message={errorMessage}/>
           </Route>
           <ProtectedRoute
           loggedIn={loggedIn}

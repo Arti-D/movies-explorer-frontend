@@ -8,7 +8,7 @@ function FilterCheckbox(props) {
     return (
         <div className="checkbox">
             <label className="checkbox__item">
-                <input onChange={handleCheckBox} type="checkbox" className="checkbox__input"/>
+                <input onClick={handleCheckBox} type="checkbox" className="checkbox__input"/>
                 <div className="checkbox__checkmark"></div>
                 <div className="checkbox__body">Короткометражки</div>
             </label>
