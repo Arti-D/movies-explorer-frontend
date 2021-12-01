@@ -21,6 +21,7 @@
 }
 
 .form__input {
+    position: relative;
     box-sizing: border-box;
     width: 100%;
     padding: 0;

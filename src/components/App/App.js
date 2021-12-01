@@ -15,9 +15,11 @@ import SavedMovies from '../SavedMovies/SavedMovies.js';
 import Profile from '../Profile/Profile.js'
 import ErrorPage from '../ErrorPage/ErrorPage';
 import ProtectedRoute from "../../utils/ProtectedRoute.js";
+// ИМПОРТ ФУНКЦИЙ
 import * as auth from '../../utils/auth.js';
-import * as mainApi from '../../utils/MainApi';
-import * as moviesApi from '../../utils/MoviesApi';
+import * as mainApi from '../../utils/MainApi.js';
+import * as moviesApi from '../../utils/MoviesApi.js';
+import * as filterMovies from '../../utils/filterMovies.js'
 
 function App() {
   const [loggedIn, setLoggedIn] = React.useState(false);
@@ -29,19 +31,31 @@ function App() {
   React.useEffect(() => {
     handleFooterVisability();
     checkToken();
-    updateUserInfo();
     getSavedMovies();
+    updateUserInfo();
     window.addEventListener('resize', updateAmountOfMovies)
     return () => {
       window.removeEventListener('resize', updateAmountOfMovies)
     }
   }, []);
 
-  // MOVIES CARDS 
-  const [movies, setMovies] = React.useState([])
-  const [isCardError, setCardError] = React.useState(false)
-  const [isSearchBtnClicked, setIsSearchBtnClicked] = React.useState(false)
+  // РАБОТА С КОМПOНЕНТАМИ
 
+  // -------------HEADER-------------
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false)
+
+  function handleMenu() {
+    setIsMenuOpen(!isMenuOpen)
+  }
+
+  React.useEffect(() => {
+    setIsMenuOpen(false)
+  }, [location.pathname])
+
+  // ОТОБРАЖЕНИЕ КАРТОЧЕК
+  const [movies, setMovies] = React.useState([]);
+  const [isCardError, setCardError] = React.useState(false);
+  const [isSearchBtnClicked, setIsSearchBtnClicked] = React.useState(false);
 
   const [amountOfMovies, setAmountOfMovies] = React.useState(() => {
     if ((window.innerWidth <= 1064) && (window.innerWidth > 676)){
@@ -90,20 +104,8 @@ function App() {
 
   // СОХРАНЕНИЕ ФИЛЬМОВ
   const [savedMovies, setSavedMovies] = React.useState([])
-
-  function getSavedMovies() {
-    mainApi
-      .getSavedMovies()
-      .then((movies) => {
-        const savedMovies = movies.data.map((item) => {
-          item.isSaved = true;
-          return item
-        })
-        setSavedMovies(savedMovies)
-        localStorage.setItem("savedMovies", savedMovies)
-      })
-  }
-
+  const [savedFilteredMovies, setSavedFilteredMovies] = React.useState([])
+  
   function handleSaveMovie(movie) {
     const isSaved = movie.isSaved;
     if (!isSaved) {
@@ -123,6 +125,7 @@ function App() {
         }).then((savedCard) => {
           savedCard.isSaved = true;
           setSavedMovies([...savedMovies, savedCard])
+          localStorage.setItem("savedMovies", JSON.stringify(savedMovies))
         }).catch((err) => console.log(err))
     } else {
       const card = findMovie(movie)
@@ -157,14 +160,67 @@ function App() {
     })
     setMovies(newMovies)
   }
-  // ПОИСК ФИЛЬМОВ
+
+  // ЗАПРОС ДАННЫХ ФИЛЬМОВ У СЕРВЕРА
   function movieSearch() {
-    moviesApi.getAllMovies()
+    moviesApi
+    .getAllMovies()
     .then(movies => {
       const isSavedMovies = handleIsSaved(movies)
       localStorage.setItem("movies", JSON.stringify(isSavedMovies))
       setMovies(isSavedMovies)
-    }).catch((err) => setCardError(true))
+    }).catch((err) => console.log(err))
+  }
+  
+  function getSavedMovies() {
+    mainApi
+      .getSavedMovies()
+      .then((movies) => {
+        const savedMovies = movies.data.map((item) => {
+          item.isSaved = true;
+          return item
+        })
+        setSavedMovies(savedMovies)
+        console.log(savedMovies);
+        localStorage.setItem("savedMovies", JSON.stringify(savedMovies))
+      })
+      .catch((err) => console.log(err))
+  }
+
+  // ПОИСК С ФИЛЬТРАМИ
+
+  function handleSearchBtn(value) {
+    setIsSearchBtnClicked(true)
+    if(localStorage.getItem("movies")) {
+      const films = filterMovies.filter(value, JSON.parse(localStorage.getItem("movies")), isShort)
+      console.log('films', films);
+      const isSavedMovies = handleIsSaved(films);
+      setMovies(isSavedMovies)
+    } else {
+      movieSearch()
+      const films = filterMovies.filter(value, movies, isShort)
+      setMovies(films)
+    }
+  }
+
+  function handleSearchSavedBtn(value) {
+    if(localStorage.getItem("savedMovies")) {
+      const films = filterMovies.filter(value, JSON.parse(localStorage.getItem("savedMovies")), isShort)
+      setSavedMovies(films)
+    } else {
+      getSavedMovies();
+      const films = filterMovies.filter(value, savedMovies, isShort)
+      setSavedMovies(films)
+    }
+  }
+  
+  const [isShort, setIsShort] = React.useState(false)
+
+  function handleIsShort() {
+    console.log(isShort);
+    setIsShort(!isShort)
+    console.log('rkbr');
+    console.log(isShort);
   }
 
   // сохранен ли фильм
@@ -183,17 +239,6 @@ function App() {
       item.isSaved = false
     }
     return item;
-  }
-
-  function handleSearchBtn() {
-    setIsSearchBtnClicked(true)
-    if(localStorage.getItem("movies")) {
-      let movies = JSON.parse(localStorage.getItem("movies"))
-      const isSavedMovies = handleIsSaved(movies);
-      setMovies(isSavedMovies)
-    } else {
-      movieSearch()
-    }
   }
 
   // АВТОРИЗАЦИЯ
@@ -270,7 +315,10 @@ function App() {
   return (
     <div className="page">
       <CurrentUserContext.Provider value={currentUser}>
-        <Header isLoggedIn={loggedIn}/>
+        <Header 
+        isLoggedIn={loggedIn}
+        isOpen={isMenuOpen}
+        handleMenu={handleMenu}/>
         <Switch>
           <Route path="/signin">
             <Login onSubmit={handleAuthorization}/>
@@ -290,6 +338,7 @@ function App() {
           isMoreBtnVisible={isMoreBtnVisible}
           handleSaveMovie={handleSaveMovie}
           isSaved={handleIsSaved}
+          handleIsShort={handleIsShort}
           ></ProtectedRoute>
           <ProtectedRoute
           loggedIn={loggedIn}
@@ -297,6 +346,8 @@ function App() {
           component={SavedMovies}
           handleSaveMovie={deleteSavedMovie}
           movies={savedMovies}
+          handleSearchBtn={handleSearchSavedBtn}
+          handleIsShort={handleIsShort}
           ></ProtectedRoute>
           <ProtectedRoute
           loggedIn={loggedIn}

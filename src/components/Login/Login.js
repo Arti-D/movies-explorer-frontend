@@ -10,6 +10,7 @@ function Login(props) {
             linkText="Регистрация"
             linkPath="/signup"
             onSubmit={props.onSubmit}
+            errorMessage=""
         />
     )
 }

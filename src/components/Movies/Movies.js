@@ -6,7 +6,10 @@ function Movies(props) {
     return (
         <section className="component movies">
             <div className="content content_movies">
-                <SearchForm handleSearchBtn={props.handleSearchBtn}/>
+                <SearchForm
+                handleSearchBtn={props.handleSearchBtn}
+                filter={props.filter}
+                handleIsShort={props.handleIsShort}/>
                 <MoviesCardList
                 movies={props.movies}
                 amountOfMovies={props.amountOfMovies}

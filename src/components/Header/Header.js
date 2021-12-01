@@ -14,16 +14,20 @@ function Header(props) {
         `${location.pathname === '/' ? 'header_promo' : 'header_not-promo'}`
     );
 
-    function handleNavBtn() {
-        const menu = document.querySelector(".header__menu");
-        const navigation = document.querySelector(".header__nav")
-        if (menu.classList.contains("header__menu_active") || navigation.classList.contains("header__nav_active")) {
-            menu.classList.remove("header__menu_active")
-            navigation.classList.remove("header__nav_active")
-        } else {
-            menu.classList.add("header__menu_active")
-            navigation.classList.add("header__nav_active")
-        }
+    // function handleMenuBtn() {
+    //     const menu = document.querySelector(".header__menu");
+    //     const navigation = document.querySelector(".header__nav")
+    //     if (menu.classList.contains("header__menu_active") || navigation.classList.contains("header__nav_active")) {
+    //         menu.classList.remove("header__menu_active")
+    //         navigation.classList.remove("header__nav_active")
+    //     } else {
+    //         menu.classList.add("header__menu_active")
+    //         navigation.classList.add("header__nav_active")
+    //     }
+    // }
+
+    function handleMenuBtn() {
+        props.handleMenu()
     }
 
     return (      
@@ -37,10 +41,10 @@ function Header(props) {
                 </div>
                 } 
                 {(location.pathname === "/movies" || location.pathname === "/saved-movies" || location.pathname === "/profile") &&
-                <div className="header__menu">
-                    <button onClick={handleNavBtn} type="button" className="header__burger-icon"></button>
-                    <nav className="header__nav">
-                        <button onClick={handleNavBtn} className="header__cross-btn"></button>
+                <div className={`header__menu ${props.isOpen && "header__menu_active"}`}>
+                    <button onClick={handleMenuBtn} type="button" className="header__burger-icon"></button>
+                    <nav className={`header__nav ${props.isOpen && "header__nav_active"}`}>
+                        <button onClick={handleMenuBtn} className="header__cross-btn"></button>
                         <ul className="header__list">
                             <li className="header__elem">
                                 <Link to="/movies" className="header__link">Фильмы</Link>

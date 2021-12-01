@@ -1,12 +1,15 @@
 import React from "react";
-import MoviesCard from "../MoviesCard/MoviesCard";
 import SearchForm from "../Movies/SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 function SavedMovies(props) {
     return (
         <section className="movie-list component">
             <div className="content">     
-                <SearchForm />
+                <SearchForm
+                handleSearchBtn={props.handleSearchBtn}
+                filter={props.filter}
+                handleIsShort={props.handleIsShort}
+                />
                 <MoviesCardList
                 movies={props.movies}
                 amountOfMovies={props.movies.length}
