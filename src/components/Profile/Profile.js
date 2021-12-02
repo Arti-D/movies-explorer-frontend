@@ -21,7 +21,7 @@ function Profile(props) {
     React.useEffect(() => {
         setUserEmail(currentUser.email)
         setUserName(currentUser.name)    
-    }, [currentUser])
+    }, [currentUser.email, currentUser.name])
 
     function handleChangeName(e) {
         setUserName(e.target.value);

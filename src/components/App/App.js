@@ -136,7 +136,7 @@ function App() {
           setSavedMovies([...savedMovies, savedCard])
           localStorage.setItem("savedMovies", JSON.stringify(savedMovies))
         })
-        .catch((err) => errorHandler(err))
+        .catch((err) => console.log(err))
     } else {
       const card = findMovie(movie)
       deleteSavedMovie(card);
@@ -156,7 +156,7 @@ function App() {
         setSavedMovies((state) => state.filter((c) => c._id !== movie._id));
         deleteMovieFromMovies(movie);
       })
-      .catch((err) => errorHandler(err))
+      .catch((err) => console.log(err))
   }
 
   function deleteMovieFromMovies(movie) {
@@ -288,7 +288,7 @@ function App() {
         history.push("/signin");
       })
       .catch((err) => {
-        errorHandler(err)
+        console.log(err)
       });
   }
 
@@ -300,7 +300,7 @@ function App() {
           setLoggedIn(false)
         }
       })
-      .catch((err) => errorHandler(err))
+      .catch((err) => console.log(err))
   }
 
   // ДАННЫЕ ПОЛЬЗОВАТЕЛЯ
@@ -311,7 +311,7 @@ function App() {
         setCurrentUser(data.data)
         console.log("апдейт юзер инфо", data.data)
       })
-      .catch((err) => errorHandler(err))
+      .catch((err) => console.log(err))
   }
 
   function handleRefactorUser(name, email) {
@@ -321,7 +321,7 @@ function App() {
         console.log("апдейтед юзер", res.data)
         setCurrentUser(res.data)
       })
-      .catch((err) => errorHandler(err))
+      .catch((err) => console.log(err))
   }
 
   return (
