@@ -30,15 +30,14 @@ function App() {
   const [errorStatus, setErrorStatus] = React.useState("")
 
   function errorHandler(err) {
-    setErrorMessage(`На сервере произошла ошибка: ${err.message}`);
-    setErrorStatus(err.status)
+    setErrorMessage(`На сервере произошла ошибка: ${err}`);
+    setErrorStatus(err)
     history.push("/error")
   }
   // FIRST RENDER
   React.useEffect(() => {
     handleFooterVisability();
     checkToken();
-    getSavedMovies();
     updateUserInfo();
     window.addEventListener('resize', updateAmountOfMovies)
     return () => {
@@ -263,9 +262,10 @@ function App() {
         if (res) {
           setLoggedIn(true);
           history.push("/movies");
+          getSavedMovies();
         }
       })
-      .catch((err) => errorHandler(err));
+      .catch((err) => console.log(err));
   }
 
   function handleAuthorization(email, password) {
@@ -277,7 +277,7 @@ function App() {
         history.push("/movies");
       })
       .catch((err) => {
-        errorHandler(err)
+        console.log(err)
       });
   }
 

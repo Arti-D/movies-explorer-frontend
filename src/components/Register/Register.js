@@ -23,8 +23,7 @@ function Register(props) {
         >
             <span className="error__text error__text_form">{nameError}</span>
             <span className="form__placeholder">Имя</span>
-            <input onChange={handleChangeName} required minLength="2" maxLength="30" className="form__input" type="text" />
-            
+            <input onChange={handleChangeName} required minLength="2" maxLength="30" className="form__input" type="text" />    
         </Form>
     )
 }

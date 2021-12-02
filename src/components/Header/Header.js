@@ -14,18 +14,6 @@ function Header(props) {
         `${location.pathname === '/' ? 'header_promo' : 'header_not-promo'}`
     );
 
-    // function handleMenuBtn() {
-    //     const menu = document.querySelector(".header__menu");
-    //     const navigation = document.querySelector(".header__nav")
-    //     if (menu.classList.contains("header__menu_active") || navigation.classList.contains("header__nav_active")) {
-    //         menu.classList.remove("header__menu_active")
-    //         navigation.classList.remove("header__nav_active")
-    //     } else {
-    //         menu.classList.add("header__menu_active")
-    //         navigation.classList.add("header__nav_active")
-    //     }
-    // }
-
     function handleMenuBtn() {
         props.handleMenu()
     }
