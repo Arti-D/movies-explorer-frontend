@@ -45,7 +45,9 @@ function Form(props) {
 
     return ( 
         <section className="form">
+            <Link className="header__link" to="/">
             <img className="form__icon" alt="icon" src={logo}/>
+            </Link>
             <h2 className="form__greetings">{props.greets}</h2>
             <form className="form__form" onSubmit={handleSubmit}>
                 <div className="form__wrapp">

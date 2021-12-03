@@ -72,10 +72,9 @@ header_not-promo {
     top: -7px;
 }
 
-/* .header__nav {
-    display: none;
-} */
-
+.header__acc-ing_main {
+    background-color: #F3C1F8;
+}
 
 
 .header__burger-icon {
@@ -142,7 +141,14 @@ header_not-promo {
         right: 3.91%;
         top: 35%;
     }
-
+    
+    .header__main {
+        background-color: #F3C1F8;
+    }
+    
+    .header__acc-ing_main {
+        background-color: white;
+    }
     .header__burger-icon:hover {
         cursor: pointer;
         opacity: .6;

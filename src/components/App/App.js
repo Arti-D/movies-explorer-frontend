@@ -272,7 +272,9 @@ function App() {
     auth
       .authorize(email, password)
       .then((data) => {
-        console.log(data)
+        currentUser.name = data.name
+        currentUser.email = data.email
+        setCurrentUser(currentUser)
         setLoggedIn(true);
         history.push("/movies");
       })
@@ -285,7 +287,8 @@ function App() {
     auth
       .register(name, email, password)
       .then((res) => {
-        history.push("/signin");
+        setCurrentUser(res.data)
+        history.push("/movies");
       })
       .catch((err) => {
         console.log(err)
@@ -309,7 +312,6 @@ function App() {
       .getUserInfo()
       .then((data) => {
         setCurrentUser(data.data)
-        console.log("апдейт юзер инфо", data.data)
       })
       .catch((err) => console.log(err))
   }
@@ -318,7 +320,6 @@ function App() {
     mainApi
       .refactorUser(name, email)
       .then((res) => {
-        console.log("апдейтед юзер", res.data)
         setCurrentUser(res.data)
       })
       .catch((err) => console.log(err))
@@ -375,11 +376,9 @@ function App() {
           <Route path="/error">
             <ErrorPage status={errorStatus} message={errorMessage}/>
           </Route>
-          <ProtectedRoute
+          <Main 
           loggedIn={loggedIn}
-          path="/"
-          component={Main}
-          ></ProtectedRoute>
+          path="/"/>
         </Switch>
         {isFooterVisible && <Footer />}
       </CurrentUserContext.Provider>
