@@ -39,6 +39,9 @@ function App() {
     handleFooterVisability();
     checkToken();
     updateUserInfo();
+    getSavedMovies();
+    const usersFilm = savedMovies.filter((item) => item.owner === currentUser._id)
+    setFilteredMovies(usersFilm)
     window.addEventListener('resize', updateAmountOfMovies)
     return () => {
       window.removeEventListener('resize', updateAmountOfMovies)
@@ -134,6 +137,7 @@ function App() {
         .then((savedCard) => {
           savedCard.isSaved = true;
           setSavedMovies([...savedMovies, savedCard])
+          setFilteredMovies([...filteredMovies, savedCard])
           localStorage.setItem("savedMovies", JSON.stringify(savedMovies))
         })
         .catch((err) => console.log(err))
@@ -145,7 +149,7 @@ function App() {
 
 
   function findMovie(movie) {
-    const card = savedMovies.find((item) => item.movieId === String(movie.id))
+    const card = filteredMovies.find((item) => item.movieId === String(movie.id))
     return card
   }
 
@@ -154,6 +158,7 @@ function App() {
       .deleteMovie(movie._id)
       .then((data) => {
         setSavedMovies((state) => state.filter((c) => c._id !== movie._id));
+        setFilteredMovies((state) => state.filter((c) => c._id !== movie._id))
         deleteMovieFromMovies(movie);
       })
       .catch((err) => console.log(err))
@@ -162,6 +167,7 @@ function App() {
   function deleteMovieFromMovies(movie) {
     const newMovies = movies.map((item) => {
       if(String(item.id) === movie.movieId) {
+
         item.isSaved = false;
         return item
       } else {
@@ -218,11 +224,13 @@ function App() {
   function handleSearchSavedBtn(value) {
     if(localStorage.getItem("savedMovies")) {
       const films = filterMovies.filter(value, JSON.parse(localStorage.getItem("savedMovies")), isShort)
-      setFilteredMovies(films)
+      const usersFilm = films.filter((item) => item.owner === currentUser._id)
+      setFilteredMovies(usersFilm)
     } else {
       getSavedMovies();
       const films = filterMovies.filter(value, savedMovies, isShort)
-      setFilteredMovies(films)
+      const usersFilm = films.filter((item) => item.owner === currentUser._id)
+      setFilteredMovies(usersFilm)
     }
   }
   // ФИЛЬТР КОРОТКОМЕТРАЖЕК
@@ -230,7 +238,6 @@ function App() {
   const [isShort, setIsShort] = React.useState(false)
   function handleIsShort() {
     setIsShort(!isShort)
-    // console.log('boo', isShort);
   }
 
   // сохранен ли фильм
@@ -242,7 +249,7 @@ function App() {
   }
 
   function isSavedMovie(item) {
-    const isSaved = savedMovies.some((i) => i.movieId === String(item.id))
+    const isSaved = savedMovies.some((i) => i.movieId === String(item.id) && i.owner === currentUser._id)
     if(isSaved) {
       item.isSaved = true
     } else {
@@ -260,6 +267,7 @@ function App() {
       .checkToken()
       .then((res) => {
         if (res) {
+          setCurrentUser(res.data)
           setLoggedIn(true);
           history.push("/movies");
           getSavedMovies();
@@ -276,7 +284,6 @@ function App() {
         currentUser.email = data.email
         setCurrentUser(currentUser)
         setLoggedIn(true);
-        history.push("/movies");
       })
       .catch((err) => {
         console.log(err)
@@ -287,8 +294,8 @@ function App() {
     auth
       .register(name, email, password)
       .then((res) => {
+        handleAuthorization(email, password)
         setCurrentUser(res.data)
-        history.push("/movies");
       })
       .catch((err) => {
         console.log(err)
@@ -301,6 +308,9 @@ function App() {
       .then((res) => {
         if(res) {
           setLoggedIn(false)
+          localStorage.removeItem("savedMovies");
+          localStorage.removeItem("movies")
+          history.push("/")
         }
       })
       .catch((err) => console.log(err))
@@ -339,6 +349,7 @@ function App() {
           <Route path="/signup">
             <Register onSubmit={handleRegistration}/>
           </Route>
+          {console.log(currentUser)}
           <ProtectedRoute
           loggedIn={loggedIn}
           path="/movies"

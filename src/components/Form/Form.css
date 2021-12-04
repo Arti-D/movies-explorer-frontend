@@ -62,6 +62,10 @@
     font-size: 14px;
 }
 
+.form__btn:disabled {
+    opacity: 0.7;
+}
+
 .form__question {
     display: block;
     font-style: normal;

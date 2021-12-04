@@ -16,7 +16,7 @@ function SearchForm(props) {
         <div className="search">
             <form className="search__form">
                 <div className="search__wrap">
-                    <input onChange={handleInputChange} type="text" className="search__input" type="search" placeholder="Фильм"></input>
+                    <input onChange={handleInputChange} type="text" className="search__input" type="search" placeholder="Введите название фильма"></input>
                     <button onClick={handleSearch} type="button" className="search__btn">Найти</button>
                 </div>
             </form>

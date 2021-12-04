@@ -11,12 +11,14 @@ function Profile(props) {
     const [isSubmit, setIsSubmit] = React.useState(false)
 
     React.useEffect(() => {
-        if(emailError.length === 0 && nameError.length === 0) {
+        const notErr = emailError.length === 0 && nameError.length === 0
+        const notSameData = userName !== currentUser.name || userEmail !== currentUser.email
+        if(notErr && notSameData) {
             setIsSubmit(true)
         } else {
             setIsSubmit(false)
         }
-    }, [nameError, emailError])
+    }, [nameError, emailError, userName, userEmail])
 
     React.useEffect(() => {
         setUserEmail(currentUser.email)
@@ -50,7 +52,6 @@ function Profile(props) {
             <h2 className="profile__title">
                 Привет, {currentUser.name}!
             </h2>
-            {console.log(isSubmit)}
             <form className="profile__form">
                 <div className="profile__form-container">
                     <div className="profile__input-wrap">
@@ -70,7 +71,7 @@ function Profile(props) {
                     </div>
                 </div>
                 <div className="profile__btn-wrap">
-                    <button onClick={handleSubmit} className="profile__btn" type="submit">Редактировать</button>
+                    <button disabled={isSubmit ? false : true} onClick={handleSubmit} className="profile__btn" type="submit">Редактировать</button>
                     <button onClick={handleLogOut} className="profile__btn" type="button">Выйти из аккаунта</button>
                 </div>
             </form>

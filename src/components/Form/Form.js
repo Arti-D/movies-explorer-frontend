@@ -11,9 +11,10 @@ function Form(props) {
     const [emailError, setEmailError] = React.useState("")
     const [passwordError, setPasswordError] = React.useState("");
     const [isSubmit, setIsSubmit] = React.useState(false);
-
     React.useEffect(() => {
-        if(emailError.length === 0 && passwordError.length === 0 && props.errorMessage.length === 0) {
+        console.log(isSubmit);
+        const noErr = emailError.length === 0 && passwordError.length === 0 && props.errorMessage.length === 0
+        if(noErr) {
             setIsSubmit(true)
         } else {
             setIsSubmit(false)
@@ -59,7 +60,7 @@ function Form(props) {
                     <span className="error__text error__text_form">{passwordError}</span>
                     <input onChange={handleChangePassword} required minLength="2" className="form__input" type="password" />
                 </div>
-                <button className="form__btn" type="submit">
+                <button disabled={isSubmit ? false : true} className="form__btn" type="submit">
                     {props.btnText}
                 </button>
             </form>
