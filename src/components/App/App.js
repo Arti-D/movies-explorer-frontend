@@ -40,14 +40,15 @@ function App() {
     handleFooterVisability();
     checkToken();
     updateUserInfo();
-    getSavedMovies();
-    const usersFilm = savedMovies.filter((item) => item.owner === currentUser._id)
-    setFilteredMovies(usersFilm)
     window.addEventListener('resize', updateAmountOfMovies)
     return () => {
       window.removeEventListener('resize', updateAmountOfMovies)
     }
   }, []);
+
+  React.useEffect(() => {
+    getSavedMovies();
+  }, [loggedIn])
 
   // РАБОТА С КОМПOНЕНТАМИ
 
@@ -94,7 +95,6 @@ function App() {
     }
   })
   const [isMoreBtnVisible, setIsMoreBtnVisible] = React.useState(true)
-  const [isMoreClicked, setIsMoreClicked] = React.useState(false)
 
   React.useEffect(() => {
     if (movies.length <= amountOfMovies){
@@ -124,7 +124,6 @@ function App() {
 
   // СОХРАНЕНИЕ ФИЛЬМОВ
   const [savedMovies, setSavedMovies] = React.useState([])
-  const [filteredMovies, setFilteredMovies] = React.useState([]);
   
   function handleSaveMovie(movie) {
     const isSaved = movie.isSaved;
@@ -146,7 +145,6 @@ function App() {
         .then((savedCard) => {
           savedCard.isSaved = true;
           setSavedMovies([...savedMovies, savedCard])
-          setFilteredMovies([...filteredMovies, savedCard])
           localStorage.setItem("savedMovies", JSON.stringify(savedMovies))
         })
         .catch((err) => console.log(err))
@@ -158,7 +156,7 @@ function App() {
 
 
   function findMovie(movie) {
-    const card = filteredMovies.find((item) => item.movieId === String(movie.id))
+    const card = savedMovies.find((item) => item.movieId === String(movie.id))
     return card
   }
 
@@ -167,7 +165,6 @@ function App() {
       .deleteMovie(movie._id)
       .then((data) => {
         setSavedMovies((state) => state.filter((c) => c._id !== movie._id));
-        setFilteredMovies((state) => state.filter((c) => c._id !== movie._id))
         deleteMovieFromMovies(movie);
       })
       .catch((err) => console.log(err))
@@ -202,17 +199,20 @@ function App() {
   }
   
   function getSavedMovies() {
-    mainApi
-    .getSavedMovies()
-    .then((movies) => {
-      const allSavedMovies = movies.data.map((item) => {
-        item.isSaved = true;
-        return item
-      })
-      setFilteredMovies(allSavedMovies)
-      localStorage.setItem("savedMovies", JSON.stringify(allSavedMovies))
-    })
-    .catch((err) => setCardError(true))
+        mainApi
+        .getSavedMovies()
+        .then((movies) => {
+          const allSavedMovies = movies.data.map((item) => {
+            item.isSaved = true;
+            return item
+          })
+          console.log("curUser from getsavedmoves", currentUser);
+          const usersFilms = allSavedMovies.filter((item) => item.owner === currentUser._id)
+          setSavedMovies(usersFilms)
+          localStorage.setItem("savedMovies", JSON.stringify(usersFilms))
+        })
+        .catch((err) => console.log(err))
+    
   }
 
   // ПОИСК С ФИЛЬТРАМИ
@@ -230,15 +230,16 @@ function App() {
   }
 
   function handleSearchSavedBtn(value) {
+    console.log(currentUser._id);
     if(localStorage.getItem("savedMovies")) {
       const films = filterMovies.filter(value, JSON.parse(localStorage.getItem("savedMovies")), isShort)
       const usersFilm = films.filter((item) => item.owner === currentUser._id)
-      setFilteredMovies(usersFilm)
+      setSavedMovies(usersFilm)
     } else {
       getSavedMovies();
       const films = filterMovies.filter(value, savedMovies, isShort)
       const usersFilm = films.filter((item) => item.owner === currentUser._id)
-      setFilteredMovies(usersFilm)
+      setSavedMovies(usersFilm)
     }
   }
   // ФИЛЬТР КОРОТКОМЕТРАЖЕК
@@ -257,7 +258,7 @@ function App() {
   }
 
   function isSavedMovie(item) {
-    const isSaved = filteredMovies.some((i) => i.movieId === String(item.id) && i.owner === currentUser._id)
+    const isSaved = savedMovies.some((i) => i.movieId === String(item.id) && i.owner === currentUser._id)
     if(isSaved) {
       item.isSaved = true
     } else {
@@ -277,8 +278,7 @@ function App() {
         if (res) {
           setCurrentUser(res.data)
           setLoggedIn(true);
-          history.push("/movies");
-          getSavedMovies();
+          history.push("/movies")
         }
       })
       .catch((err) => console.log(err));
@@ -291,7 +291,7 @@ function App() {
         currentUser.name = data.name
         currentUser.email = data.email
         setCurrentUser(currentUser)
-        setLoggedIn(true);
+        checkToken();
         history.push("/movies")
       })
       .catch((err) => {
@@ -325,7 +325,6 @@ function App() {
           localStorage.removeItem("movies")
           setMovies([])
           setSavedMovies([])
-          setFilteredMovies([])
           setIsSearchBtnClicked(false)
           setIsMoreBtnVisible(false)
           history.push("/")
@@ -335,12 +334,13 @@ function App() {
   }
 
   // ДАННЫЕ ПОЛЬЗОВАТЕЛЯ
+
   function updateUserInfo() {
     mainApi
       .getUserInfo()
       .then((data) => {
         setCurrentUser(data.data)
-        getSavedMovies()
+        console.log(currentUser);
       })
       .catch((err) => console.log(err))
   }
@@ -395,7 +395,7 @@ function App() {
           path="/saved-movies"
           component={SavedMovies}
           handleSaveMovie={deleteSavedMovie}
-          movies={filteredMovies}
+          movies={savedMovies}
           isFetching={isFetching}
           handleSearchBtn={handleSearchSavedBtn}
           handleIsShort={handleIsShort}
@@ -409,12 +409,13 @@ function App() {
           refactorUser={handleRefactorUser}
           profileName="Artemis"
           ></ProtectedRoute>
-          <Route path="/error">
-            <ErrorPage status={errorStatus} message={errorMessage}/>
+          <Route path="/">
+            <Main 
+            loggedIn={loggedIn} />
           </Route>
-          <Main 
-          loggedIn={loggedIn}
-          path="/"/>
+          <Route path="*">
+            <ErrorPage status="404" message="страница не найдена"/>
+          </Route>
         </Switch>
         {isFooterVisible && <Footer />}
         <InfoTooltip isOpen={isPopupOpen} onClose={closePopup} isSuccess={isFetchSuccess}/>
