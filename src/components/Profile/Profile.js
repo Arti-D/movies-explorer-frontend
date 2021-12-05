@@ -39,6 +39,7 @@ function Profile(props) {
         e.preventDefault();
         if (isSubmit) {
             props.refactorUser(userName, userEmail)
+            setIsSubmit(false)
         }
     }
 

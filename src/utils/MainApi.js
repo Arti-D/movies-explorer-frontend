@@ -1,3 +1,5 @@
+import { getAllMovies } from "./MoviesApi";
+
 export const BASE_URL = "https://api.dmovies-explorer.arti.nomoredomains.rocks";
 
 function checkResponse(res) {

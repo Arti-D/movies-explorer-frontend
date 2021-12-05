@@ -11,8 +11,8 @@ function Form(props) {
     const [emailError, setEmailError] = React.useState("")
     const [passwordError, setPasswordError] = React.useState("");
     const [isSubmit, setIsSubmit] = React.useState(false);
+
     React.useEffect(() => {
-        console.log(isSubmit);
         const noErr = emailError.length === 0 && passwordError.length === 0 && props.errorMessage.length === 0
         if(noErr) {
             setIsSubmit(true)
@@ -20,6 +20,7 @@ function Form(props) {
             setIsSubmit(false)
         }
     }, [emailError, passwordError, props.errorMessage])
+    
     function handleChangeEmail(e) {
         setEmail(e.target.value);
         setEmailError(validation.validateEmail(e.target.value))

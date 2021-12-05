@@ -15,11 +15,12 @@ import SavedMovies from '../SavedMovies/SavedMovies.js';
 import Profile from '../Profile/Profile.js'
 import ErrorPage from '../ErrorPage/ErrorPage';
 import ProtectedRoute from "../../utils/ProtectedRoute.js";
+import InfoTooltip from "../InfoTooltip/InfoTooltip.js";
 // ИМПОРТ ФУНКЦИЙ
 import * as auth from '../../utils/auth.js';
 import * as mainApi from '../../utils/MainApi.js';
 import * as moviesApi from '../../utils/MoviesApi.js';
-import * as filterMovies from '../../utils/filterMovies.js'
+import * as filterMovies from '../../utils/filterMovies.js';
 
 function App() {
   const [loggedIn, setLoggedIn] = React.useState(false);
@@ -71,6 +72,13 @@ function App() {
     }
   };
   
+  // ----------------Status Popup-----------------
+  const [isPopupOpen, setIsPopupOpen] = React.useState(false)
+  const [isFetchSuccess, setIsFetchSuccess] = React.useState(true)
+
+  function closePopup() {
+    setIsPopupOpen(false)
+  }
   // ОТОБРАЖЕНИЕ КАРТОЧЕК
   const [movies, setMovies] = React.useState([]);
   const [isCardError, setCardError] = React.useState(false);
@@ -86,6 +94,7 @@ function App() {
     }
   })
   const [isMoreBtnVisible, setIsMoreBtnVisible] = React.useState(true)
+  const [isMoreClicked, setIsMoreClicked] = React.useState(false)
 
   React.useEffect(() => {
     if (movies.length <= amountOfMovies){
@@ -93,16 +102,16 @@ function App() {
     } else {
       setIsMoreBtnVisible(true)
     }
-  }, [amountOfMovies, isSearchBtnClicked])
+  }, [amountOfMovies, isSearchBtnClicked, movies.length])
 
   const updateAmountOfMovies = () => {
     if ((window.innerWidth <= 1064) && (window.innerWidth > 676)){
-      setAmountOfMovies(8)
-    } else if (window.innerWidth <= 676) {
-      setAmountOfMovies(5)
-    } else if (window.innerWidth > 1064) {
-      setAmountOfMovies(12)
-    }
+        setAmountOfMovies(8)
+      } else if (window.innerWidth <= 676) {
+        setAmountOfMovies(5)
+      } else if (window.innerWidth > 1064) {
+        setAmountOfMovies(12)
+      }
   }
 
   function  handleMoreCardBtn() {
@@ -167,7 +176,6 @@ function App() {
   function deleteMovieFromMovies(movie) {
     const newMovies = movies.map((item) => {
       if(String(item.id) === movie.movieId) {
-
         item.isSaved = false;
         return item
       } else {
@@ -195,16 +203,16 @@ function App() {
   
   function getSavedMovies() {
     mainApi
-      .getSavedMovies()
-      .then((movies) => {
-        const savedMovies = movies.data.map((item) => {
-          item.isSaved = true;
-          return item
-        })
-        setSavedMovies(savedMovies)
-        localStorage.setItem("savedMovies", JSON.stringify(savedMovies))
+    .getSavedMovies()
+    .then((movies) => {
+      const allSavedMovies = movies.data.map((item) => {
+        item.isSaved = true;
+        return item
       })
-      .catch((err) => setCardError(true))
+      setFilteredMovies(allSavedMovies)
+      localStorage.setItem("savedMovies", JSON.stringify(allSavedMovies))
+    })
+    .catch((err) => setCardError(true))
   }
 
   // ПОИСК С ФИЛЬТРАМИ
@@ -249,7 +257,7 @@ function App() {
   }
 
   function isSavedMovie(item) {
-    const isSaved = savedMovies.some((i) => i.movieId === String(item.id) && i.owner === currentUser._id)
+    const isSaved = filteredMovies.some((i) => i.movieId === String(item.id) && i.owner === currentUser._id)
     if(isSaved) {
       item.isSaved = true
     } else {
@@ -284,9 +292,12 @@ function App() {
         currentUser.email = data.email
         setCurrentUser(currentUser)
         setLoggedIn(true);
+        history.push("/movies")
       })
       .catch((err) => {
-        console.log(err)
+        setIsFetchSuccess(false)
+        setIsPopupOpen(true)
+        console.log(err);
       });
   }
 
@@ -298,7 +309,9 @@ function App() {
         setCurrentUser(res.data)
       })
       .catch((err) => {
-        console.log(err)
+        setIsFetchSuccess(false)
+        setIsPopupOpen(true)
+        console.log(err);
       });
   }
 
@@ -310,6 +323,11 @@ function App() {
           setLoggedIn(false)
           localStorage.removeItem("savedMovies");
           localStorage.removeItem("movies")
+          setMovies([])
+          setSavedMovies([])
+          setFilteredMovies([])
+          setIsSearchBtnClicked(false)
+          setIsMoreBtnVisible(false)
           history.push("/")
         }
       })
@@ -322,6 +340,7 @@ function App() {
       .getUserInfo()
       .then((data) => {
         setCurrentUser(data.data)
+        getSavedMovies()
       })
       .catch((err) => console.log(err))
   }
@@ -331,8 +350,15 @@ function App() {
       .refactorUser(name, email)
       .then((res) => {
         setCurrentUser(res.data)
+        setIsFetchSuccess(true)
       })
-      .catch((err) => console.log(err))
+      .catch((err) => {
+        setIsFetchSuccess(false)
+        console.log(err);
+      })
+      .finally(() => {
+        setIsPopupOpen(true)
+      })
   }
 
   return (
@@ -349,7 +375,6 @@ function App() {
           <Route path="/signup">
             <Register onSubmit={handleRegistration}/>
           </Route>
-          {console.log(currentUser)}
           <ProtectedRoute
           loggedIn={loggedIn}
           path="/movies"
@@ -392,6 +417,7 @@ function App() {
           path="/"/>
         </Switch>
         {isFooterVisible && <Footer />}
+        <InfoTooltip isOpen={isPopupOpen} onClose={closePopup} isSuccess={isFetchSuccess}/>
       </CurrentUserContext.Provider>
     </div>
   );
