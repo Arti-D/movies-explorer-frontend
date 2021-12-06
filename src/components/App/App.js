@@ -26,6 +26,7 @@ function App() {
   const [loggedIn, setLoggedIn] = React.useState(false);
   const location = useLocation()
   const history = useHistory()
+  const [savedMovies, setSavedMovies] = React.useState([])
 
   // ОБРАБОТКА ОШИБОК 
   function errorHandler(err) {
@@ -49,7 +50,7 @@ function App() {
 
   React.useEffect(() => {
     getSavedMovies();
-  }, [loggedIn])
+  }, [loggedIn, savedMovies.length])
 
   // РАБОТА С КОМПOНЕНТАМИ
 
@@ -135,7 +136,6 @@ function App() {
   }
 
   // СОХРАНЕНИЕ ФИЛЬМОВ
-  const [savedMovies, setSavedMovies] = React.useState([])
   
   function handleSaveMovie(movie) {
     const isSaved = movie.isSaved;
@@ -155,6 +155,7 @@ function App() {
           nameEN: movie.nameEN,
         })
         .then((savedCard) => {
+          console.log(savedCard);
           savedCard.isSaved = true;
           setSavedMovies([...savedMovies, savedCard])
           localStorage.setItem("savedMovies", JSON.stringify(savedMovies))
@@ -220,7 +221,6 @@ function App() {
             item.isSaved = true;
             return item
           })
-          console.log("curUser from getsavedmoves", currentUser);
           const usersFilms = allSavedMovies.filter((item) => item.owner === currentUser._id)
           setSavedMovies(usersFilms)
           localStorage.setItem("savedMovies", JSON.stringify(usersFilms))
@@ -244,7 +244,6 @@ function App() {
   }
 
   function handleSearchSavedBtn(value) {
-    console.log(currentUser._id);
     if(localStorage.getItem("savedMovies")) {
       const films = filterMovies.filter(value, JSON.parse(localStorage.getItem("savedMovies")), isShort)
       const usersFilm = films.filter((item) => item.owner === currentUser._id)
