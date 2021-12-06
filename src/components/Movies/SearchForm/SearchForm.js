@@ -28,6 +28,7 @@ function SearchForm(props) {
                 </div>
             </form>
             <FilterCheckbox
+            isShort={props.isShort}
             handleIsShort={props.handleIsShort}/>
             <div className="content search__row"></div>
         </div>

@@ -9,7 +9,7 @@ function FilterCheckbox(props) {
     return (
         <div className="checkbox">
             <label className="checkbox__item">
-                <input onClick={handleCheckBox} type="checkbox" className="checkbox__input"/>
+                <input checked={props.isShort} onClick={handleCheckBox} type="checkbox" className="checkbox__input"/>
                 <div className="checkbox__checkmark"></div>
                 <div className="checkbox__body">Короткометражки</div>
             </label>

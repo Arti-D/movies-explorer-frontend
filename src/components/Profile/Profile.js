@@ -50,7 +50,6 @@ function Profile(props) {
 
     return (
         <div className="component profile">
-            {console.log(props.isFetching)}
             <h2 className="profile__title">
                 Привет, {currentUser.name}!
             </h2>

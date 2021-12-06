@@ -27,7 +27,7 @@ function App() {
   const location = useLocation()
   const history = useHistory()
   const [savedMovies, setSavedMovies] = React.useState([])
-
+  const [isAdded, setIsAdded] = React.useState(false)
   // ОБРАБОТКА ОШИБОК 
   function errorHandler(err) {
     if(loggedIn) {
@@ -50,7 +50,7 @@ function App() {
 
   React.useEffect(() => {
     getSavedMovies();
-  }, [loggedIn, savedMovies.length])
+  }, [loggedIn, isAdded])
 
   // РАБОТА С КОМПOНЕНТАМИ
 
@@ -155,7 +155,7 @@ function App() {
           nameEN: movie.nameEN,
         })
         .then((savedCard) => {
-          console.log(savedCard);
+          setIsAdded(true)
           savedCard.isSaved = true;
           setSavedMovies([...savedMovies, savedCard])
           localStorage.setItem("savedMovies", JSON.stringify(savedMovies))
@@ -186,6 +186,7 @@ function App() {
   }
 
   function deleteMovieFromMovies(movie) {
+    setIsAdded(false)
     const newMovies = movies.map((item) => {
       if(String(item.id) === movie.movieId) {
         item.isSaved = false;

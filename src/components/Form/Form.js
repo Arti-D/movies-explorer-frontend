@@ -49,7 +49,6 @@ function Form(props) {
                 console.log(props.name, email, password);
                 props.onSubmit(props.name, email, password)
             } else if (location.pathname === "/signin") {
-                console.log(email, password);
                 props.onSubmit(email, password);
             }
         }
