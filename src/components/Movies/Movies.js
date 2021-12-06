@@ -8,8 +8,8 @@ function Movies(props) {
         <section className="component movies">
             <div className="content content_movies">
                 <SearchForm
+                isShort={props.isShort}
                 handleSearchBtn={props.handleSearchBtn}
-                filter={props.filter}
                 handleIsShort={props.handleIsShort}/>
                 {props.isFetching ? <Preloader /> : 
                 <MoviesCardList

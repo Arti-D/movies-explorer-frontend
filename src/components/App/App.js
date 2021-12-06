@@ -164,7 +164,6 @@ function App() {
     mainApi
       .deleteMovie(movie._id)
       .then((data) => {
-        // setSavedMovies((state) => state.filter((c) => c._id !== movie._id));
         const moviesAfterDel = savedMovies.filter((c) => c._id !== movie._id);
         setSavedMovies(moviesAfterDel);
         localStorage.setItem("savedMovies", JSON.stringify(moviesAfterDel))
@@ -248,6 +247,7 @@ function App() {
   // ФИЛЬТР КОРОТКОМЕТРАЖЕК
   
   const [isShort, setIsShort] = React.useState(false)
+  
   function handleIsShort() {
     setIsShort(!isShort)
   }
@@ -273,6 +273,8 @@ function App() {
   // АВТОРИЗАЦИЯ
   const [currentUser, setCurrentUser] = React.useState({})
   const [isCheckingToken, setIsCheckingToken] = React.useState(true)
+  const [isFormFetching, setIsFormFetching ] = React.useState(false)
+
   function checkToken() {
     auth
       .checkToken()
@@ -287,6 +289,7 @@ function App() {
   }
 
   function handleAuthorization(email, password) {
+    setIsFormFetching(true)
     auth
       .authorize(email, password)
       .then((data) => {
@@ -295,22 +298,27 @@ function App() {
         setCurrentUser(currentUser)
         checkToken();
         history.push("/movies")
+        setIsFormFetching(false)
       })
       .catch((err) => {
+        setIsFormFetching(false)
         errorHandler(err)
-      });
+      })
   }
 
   function handleRegistration(name, email, password) {
+    setIsFormFetching(true)
     auth
       .register(name, email, password)
       .then((res) => {
         handleAuthorization(email, password)
         setCurrentUser(res.data)
+        setIsFormFetching(false)
       })
       .catch((err) => {
         errorHandler(err)
-      });
+        setIsFormFetching(false)
+      })
   }
 
   function handleLogOut() {
@@ -332,14 +340,18 @@ function App() {
   }
 
   function handleRefactorUser(name, email) {
+    setIsFormFetching(true)
     mainApi
       .refactorUser(name, email)
       .then((res) => {
         setCurrentUser(res.data)
         setIsFetchSuccess(true)
+        setIsPopupOpen(true)
+        setIsFormFetching(false)
       })
       .catch((err) => {
         errorHandler(err)
+        setIsFormFetching(false)
       })
   }
 
@@ -352,10 +364,10 @@ function App() {
         handleMenu={handleMenu}/>
         <Switch>
           <Route path="/signin">
-            <Login onSubmit={handleAuthorization}/>
+            <Login isFetching={isFormFetching} onSubmit={handleAuthorization}/>
           </Route>
           <Route path="/signup">
-            <Register onSubmit={handleRegistration}/>
+            <Register isFetching={isFormFetching} onSubmit={handleRegistration}/>
           </Route>
           <ProtectedRoute
           isCheckingToken={isCheckingToken}
@@ -372,6 +384,7 @@ function App() {
           handleSaveMovie={handleSaveMovie}
           isSaved={handleIsSaved}
           handleIsShort={handleIsShort}
+          isShort={isShort}
           ></ProtectedRoute>
           <ProtectedRoute
           isCheckingToken={isCheckingToken}
@@ -384,11 +397,13 @@ function App() {
           handleSearchBtn={handleSearchSavedBtn}
           handleIsShort={handleIsShort}
           isError={isCardError}
+          isShort={isShort}
           ></ProtectedRoute>
           <ProtectedRoute
           isCheckingToken={isCheckingToken}
           loggedIn={loggedIn}
           path="/profile"
+          isFetching={isFormFetching}
           component={Profile}
           handleLogOut={handleLogOut}
           refactorUser={handleRefactorUser}

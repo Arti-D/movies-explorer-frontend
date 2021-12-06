@@ -5,6 +5,7 @@ function FilterCheckbox(props) {
     function handleCheckBox() {
         props.handleIsShort()
     }
+    
     return (
         <div className="checkbox">
             <label className="checkbox__item">

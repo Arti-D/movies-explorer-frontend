@@ -50,6 +50,7 @@ function Profile(props) {
 
     return (
         <div className="component profile">
+            {console.log(props.isFetching)}
             <h2 className="profile__title">
                 Привет, {currentUser.name}!
             </h2>
@@ -57,6 +58,7 @@ function Profile(props) {
                 <div className="profile__form-container">
                     <div className="profile__input-wrap">
                         <input 
+                        disabled={props.isFetching}
                         onChange={handleChangeName} 
                         value={userName} 
                         name="name" 
@@ -66,7 +68,7 @@ function Profile(props) {
                         <span className="error__text">{nameError}</span>
                     </div>
                     <div className="profile__input-wrap">
-                        <input onChange={handleChangeEmail} value={userEmail || ''} name="email" className="profile__input" type="email" />
+                        <input disabled={props.isFetching} onChange={handleChangeEmail} value={userEmail || ''} name="email" className="profile__input" type="email" />
                         <label className="profile__label" for="email">Email</label>
                         <span className="error__text">{emailError}</span>
                     </div>

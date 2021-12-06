@@ -67,10 +67,10 @@ function Form(props) {
                     {props.children}
                     <span className="error__text error__text_form">{emailError}</span>
                     <span className="form__placeholder">Email</span>
-                    <input onChange={handleChangeEmail} required minLength="2" className="form__input" type="email" />
+                    <input disabled={props.isFetching} onChange={handleChangeEmail} required minLength="2" className="form__input" type="email" />
                     <span className="form__placeholder">Пароль</span>
                     <span className="error__text error__text_form">{passwordError}</span>
-                    <input onChange={handleChangePassword} required minLength="2" className="form__input" type="password" />
+                    <input disabled={props.isFetching} onChange={handleChangePassword} required minLength="2" className="form__input" type="password" />
                 </div>
                 <button disabled={isSubmit ? false : true} className="form__btn" type="submit">
                     {props.btnText}

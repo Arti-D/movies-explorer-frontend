@@ -7,8 +7,8 @@ function SavedMovies(props) {
         <section className="movie-list component">
             <div className="content">     
                 <SearchForm
+                isShort={props.isShort}
                 handleSearchBtn={props.handleSearchBtn}
-                filter={props.filter}
                 handleIsShort={props.handleIsShort}
                 />
                 {props.isFetching ? <Preloader /> : 

@@ -12,6 +12,12 @@ function SearchForm(props) {
         props.handleSearchBtn(filterValue);
     }
 
+    
+    React.useEffect(() => {
+        console.log("сработало");
+        props.handleSearchBtn(filterValue)
+    }, [props.isShort])
+
     return (
         <div className="search">
             <form className="search__form">
@@ -20,7 +26,8 @@ function SearchForm(props) {
                     <button onClick={handleSearch} type="button" className="search__btn">Найти</button>
                 </div>
             </form>
-            <FilterCheckbox handleIsShort={props.handleIsShort}/>
+            <FilterCheckbox
+            handleIsShort={props.handleIsShort}/>
             <div className="content search__row"></div>
         </div>
     )

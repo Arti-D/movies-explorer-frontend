@@ -12,6 +12,7 @@ function Register(props) {
 
     return (
         <Form
+        isFetching={props.isFetching}
         greets="Добро пожаловать!"
         btnText="Зарегистрироваться"
         question="Уже зарегистрировались?"
@@ -23,7 +24,7 @@ function Register(props) {
         >
             <span className="error__text error__text_form">{nameError}</span>
             <span className="form__placeholder">Имя</span>
-            <input onChange={handleChangeName} required minLength="2" maxLength="30" className="form__input" type="text" />    
+            <input disabled={props.isFetching} onChange={handleChangeName} required minLength="2" maxLength="30" className="form__input" type="text" />    
         </Form>
     )
 }

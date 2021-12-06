@@ -1,4 +1,4 @@
-export const BASE_URL = "https://api.dmovies-explorer.arti.nomoredomains.rocks";
+import { BASE_URL } from "../utils/constants.js";
 
 export const checkResponse = (res) => {
   if (res.ok) {

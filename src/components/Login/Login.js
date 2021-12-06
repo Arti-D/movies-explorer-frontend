@@ -4,6 +4,7 @@ import Form from "../Form/Form.js";
 function Login(props) {
     return (
         <Form
+            isFetching={props.isFetching}
             greets="Рады видеть!"
             btnText="Войти"
             question="Ещё не зарегистрированы?"
