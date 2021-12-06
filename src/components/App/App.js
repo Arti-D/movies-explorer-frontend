@@ -25,21 +25,21 @@ import * as filterMovies from '../../utils/filterMovies.js';
 function App() {
   const [loggedIn, setLoggedIn] = React.useState(false);
   const location = useLocation()
+  const history = useHistory()
 
   // ОБРАБОТКА ОШИБОК 
-  const [errorMessage, setErrorMessage] = React.useState("")
-  const [errorStatus, setErrorStatus] = React.useState("")
-
   function errorHandler(err) {
-    setErrorMessage(`На сервере произошла ошибка: ${err}`);
-    setErrorStatus(err)
-    history.push("/error")
+    if(loggedIn) {
+      setIsPopupOpen(true)
+      setIsFetchSuccess(false)
+    } else {
+      console.log(err);
+    }
   }
   // FIRST RENDER
   React.useEffect(() => {
     handleFooterVisability();
     checkToken();
-    updateUserInfo();
     window.addEventListener('resize', updateAmountOfMovies)
     return () => {
       window.removeEventListener('resize', updateAmountOfMovies)
@@ -147,7 +147,7 @@ function App() {
           setSavedMovies([...savedMovies, savedCard])
           localStorage.setItem("savedMovies", JSON.stringify(savedMovies))
         })
-        .catch((err) => console.log(err))
+        .catch((err) => errorHandler(err))
     } else {
       const card = findMovie(movie)
       deleteSavedMovie(card);
@@ -164,10 +164,13 @@ function App() {
     mainApi
       .deleteMovie(movie._id)
       .then((data) => {
-        setSavedMovies((state) => state.filter((c) => c._id !== movie._id));
+        // setSavedMovies((state) => state.filter((c) => c._id !== movie._id));
+        const moviesAfterDel = savedMovies.filter((c) => c._id !== movie._id);
+        setSavedMovies(moviesAfterDel);
+        localStorage.setItem("savedMovies", JSON.stringify(moviesAfterDel))
         deleteMovieFromMovies(movie);
       })
-      .catch((err) => console.log(err))
+      .catch((err) => errorHandler(err))
   }
 
   function deleteMovieFromMovies(movie) {
@@ -211,7 +214,7 @@ function App() {
           setSavedMovies(usersFilms)
           localStorage.setItem("savedMovies", JSON.stringify(usersFilms))
         })
-        .catch((err) => console.log(err))
+        .catch((err) => errorHandler(err))
     
   }
 
@@ -269,8 +272,7 @@ function App() {
 
   // АВТОРИЗАЦИЯ
   const [currentUser, setCurrentUser] = React.useState({})
-  const history = useHistory()
-  
+  const [isCheckingToken, setIsCheckingToken] = React.useState(true)
   function checkToken() {
     auth
       .checkToken()
@@ -278,10 +280,10 @@ function App() {
         if (res) {
           setCurrentUser(res.data)
           setLoggedIn(true);
-          history.push("/movies")
+          setIsCheckingToken(false)
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => errorHandler(err));
   }
 
   function handleAuthorization(email, password) {
@@ -295,9 +297,7 @@ function App() {
         history.push("/movies")
       })
       .catch((err) => {
-        setIsFetchSuccess(false)
-        setIsPopupOpen(true)
-        console.log(err);
+        errorHandler(err)
       });
   }
 
@@ -309,9 +309,7 @@ function App() {
         setCurrentUser(res.data)
       })
       .catch((err) => {
-        setIsFetchSuccess(false)
-        setIsPopupOpen(true)
-        console.log(err);
+        errorHandler(err)
       });
   }
 
@@ -330,19 +328,7 @@ function App() {
           history.push("/")
         }
       })
-      .catch((err) => console.log(err))
-  }
-
-  // ДАННЫЕ ПОЛЬЗОВАТЕЛЯ
-
-  function updateUserInfo() {
-    mainApi
-      .getUserInfo()
-      .then((data) => {
-        setCurrentUser(data.data)
-        console.log(currentUser);
-      })
-      .catch((err) => console.log(err))
+      .catch((err) => errorHandler(err))
   }
 
   function handleRefactorUser(name, email) {
@@ -353,11 +339,7 @@ function App() {
         setIsFetchSuccess(true)
       })
       .catch((err) => {
-        setIsFetchSuccess(false)
-        console.log(err);
-      })
-      .finally(() => {
-        setIsPopupOpen(true)
+        errorHandler(err)
       })
   }
 
@@ -376,6 +358,7 @@ function App() {
             <Register onSubmit={handleRegistration}/>
           </Route>
           <ProtectedRoute
+          isCheckingToken={isCheckingToken}
           loggedIn={loggedIn}
           path="/movies"
           component={Movies}
@@ -391,6 +374,7 @@ function App() {
           handleIsShort={handleIsShort}
           ></ProtectedRoute>
           <ProtectedRoute
+          isCheckingToken={isCheckingToken}
           loggedIn={loggedIn}
           path="/saved-movies"
           component={SavedMovies}
@@ -402,6 +386,7 @@ function App() {
           isError={isCardError}
           ></ProtectedRoute>
           <ProtectedRoute
+          isCheckingToken={isCheckingToken}
           loggedIn={loggedIn}
           path="/profile"
           component={Profile}
@@ -409,9 +394,9 @@ function App() {
           refactorUser={handleRefactorUser}
           profileName="Artemis"
           ></ProtectedRoute>
-          <Route path="/">
-            <Main 
-            loggedIn={loggedIn} />
+          <Route exact path="/">
+              <Main 
+              loggedIn={loggedIn} />
           </Route>
           <Route path="*">
             <ErrorPage status="404" message="страница не найдена"/>

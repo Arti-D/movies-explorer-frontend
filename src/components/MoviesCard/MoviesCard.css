@@ -70,7 +70,7 @@
     right: 0;
     left: 0;
     bottom: 0;
-    z-index: 3;
+    z-index: 1;
     background-color: #FF4062;
     background-image: url('../../images/savedicon.svg');
     background-repeat: no-repeat;

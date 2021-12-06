@@ -3,15 +3,26 @@ import { Link } from 'react-router-dom';
 import logo from '../../images/headerLogo.png';
 import { useLocation } from "react-router";
 import * as validation from "../../utils/validation";
+import * as auth from '../../utils/auth';
+import { useHistory } from 'react-router-dom';
 
 function Form(props) {
     const location = useLocation();
+    const history = useHistory();
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
     const [emailError, setEmailError] = React.useState("")
     const [passwordError, setPasswordError] = React.useState("");
     const [isSubmit, setIsSubmit] = React.useState(false);
-
+    React.useEffect(() => {
+        auth.checkToken()
+        .then(() => {
+            history.push("/movies")
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    }, [])
     React.useEffect(() => {
         const noErr = emailError.length === 0 && passwordError.length === 0 && props.errorMessage.length === 0
         if(noErr) {

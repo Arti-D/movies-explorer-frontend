@@ -8,7 +8,7 @@ function Header(props) {
     const location = useLocation();
     
     const headerVisibility = (
-        `header ${location.pathname === '/signin' || location.pathname ==='/signup' || location.pathname ==='/error' ? 'header_hidden' : ''}`
+        `header ${location.pathname === '/signin' || location.pathname ==='/signup' || props.isError ? 'header_hidden' : ''}`
     )
     
     function handleMenuBtn() {
@@ -16,7 +16,7 @@ function Header(props) {
     }
 
     return (      
-    <header className={`${props.isLoggedIn ? 'header_not-promo' : 'header_promo'}`}>
+    <header className={`${location.pathname === "/" ? 'header_promo' : 'header_not-promo'}`}>
         <div className={headerVisibility}>
             <Link className="header__link" to="/">
             <img alt="логотип" src={logoPath} className="header__logo"/>
