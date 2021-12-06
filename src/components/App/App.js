@@ -40,9 +40,10 @@ function App() {
   React.useEffect(() => {
     handleFooterVisability();
     checkToken();
-    window.addEventListener('resize', updateAmountOfMovies)
+    renderAmountOfMovies();
+    window.addEventListener('resize', resizeAmountOfMovies)
     return () => {
-      window.removeEventListener('resize', updateAmountOfMovies)
+      window.removeEventListener('resize', resizeAmountOfMovies)
     }
   }, []);
 
@@ -84,17 +85,19 @@ function App() {
   const [movies, setMovies] = React.useState([]);
   const [isCardError, setCardError] = React.useState(false);
   const [isSearchBtnClicked, setIsSearchBtnClicked] = React.useState(false);
-
-  const [amountOfMovies, setAmountOfMovies] = React.useState(() => {
-    if ((window.innerWidth <= 1064) && (window.innerWidth > 676)){
-      return 8;
-    } else if (window.innerWidth <= 676) {
-      return 5
-    } else if (window.innerWidth > 1064) {
-      return 12
-    }
-  })
+  const [amountOfMovies, setAmountOfMovies] = React.useState(0);
   const [isMoreBtnVisible, setIsMoreBtnVisible] = React.useState(true)
+  const [ isMoreBtnClicked, setIsMoreBtnClicked] = React.useState(false)
+
+  function renderAmountOfMovies() {
+    if ((window.innerWidth <= 1064) && (window.innerWidth > 676)){
+      setAmountOfMovies(8);
+    } else if (window.innerWidth <= 676) {
+      setAmountOfMovies(5);
+    } else if (window.innerWidth > 1064) {
+      setAmountOfMovies(12);
+    }
+  }
 
   React.useEffect(() => {
     if (movies.length <= amountOfMovies){
@@ -104,21 +107,30 @@ function App() {
     }
   }, [amountOfMovies, isSearchBtnClicked, movies.length])
 
-  const updateAmountOfMovies = () => {
-    if ((window.innerWidth <= 1064) && (window.innerWidth > 676)){
-        setAmountOfMovies(8)
-      } else if (window.innerWidth <= 676) {
-        setAmountOfMovies(5)
-      } else if (window.innerWidth > 1064) {
-        setAmountOfMovies(12)
-      }
-  }
-
   function  handleMoreCardBtn() {
+    setIsMoreBtnClicked(true)
     if (window.innerWidth <= 1064) {
       setAmountOfMovies(amountOfMovies + 2)
+    } else if (window.innerWidth > 1428) {
+      setAmountOfMovies(amountOfMovies + 4)
     } else {
       setAmountOfMovies(amountOfMovies + 3)
+    }
+  }
+
+  function resizeAmountOfMovies() {
+    if(isMoreBtnClicked) {
+      if ((window.innerWidth <= 1064) && (window.innerWidth > 676)){
+        setAmountOfMovies(amountOfMovies - movies.length % 2)
+      } else if (window.innerWidth <= 676) {
+        setAmountOfMovies(amountOfMovies)
+      } else if (window.innerWidth > 1064) {
+        setAmountOfMovies(amountOfMovies - movies.length % 3)
+      } else if (window.innerWidth > 1428) {
+        setAmountOfMovies(amountOfMovies - amountOfMovies % 4)
+      }
+    } else {
+      renderAmountOfMovies()
     }
   }
 

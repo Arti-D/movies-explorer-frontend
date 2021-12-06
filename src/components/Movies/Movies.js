@@ -10,7 +10,9 @@ function Movies(props) {
                 <SearchForm
                 isShort={props.isShort}
                 handleSearchBtn={props.handleSearchBtn}
-                handleIsShort={props.handleIsShort}/>
+                length={props.movies.length}
+                handleIsShort={props.handleIsShort}
+                />
                 {props.isFetching ? <Preloader /> : 
                 <MoviesCardList
                 movies={props.movies}

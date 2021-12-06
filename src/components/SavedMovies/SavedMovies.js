@@ -10,6 +10,7 @@ function SavedMovies(props) {
                 isShort={props.isShort}
                 handleSearchBtn={props.handleSearchBtn}
                 handleIsShort={props.handleIsShort}
+                length={props.movies.length}
                 />
                 {props.isFetching ? <Preloader /> : 
                 <MoviesCardList

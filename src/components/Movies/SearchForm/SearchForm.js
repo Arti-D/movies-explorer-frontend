@@ -14,8 +14,9 @@ function SearchForm(props) {
 
     
     React.useEffect(() => {
-        console.log("сработало");
-        props.handleSearchBtn(filterValue)
+        if(props.length > 0) { 
+            props.handleSearchBtn(filterValue)
+        }
     }, [props.isShort])
 
     return (
