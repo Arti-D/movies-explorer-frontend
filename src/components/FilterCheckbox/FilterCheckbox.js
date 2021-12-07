@@ -1,10 +1,15 @@
 import React from "react";
 
-function FilterCheckbox() {
+function FilterCheckbox(props) {
+
+    function handleCheckBox() {
+        props.handleIsShort()
+    }
+    
     return (
         <div className="checkbox">
             <label className="checkbox__item">
-                <input type="checkbox" className="checkbox__input"/>
+                <input checked={props.isShort} onClick={handleCheckBox} type="checkbox" className="checkbox__input"/>
                 <div className="checkbox__checkmark"></div>
                 <div className="checkbox__body">Короткометражки</div>
             </label>

@@ -1,26 +1,25 @@
 import React from "react";
-import MoviesCard from "../MoviesCard/MoviesCard";
-import movieImg from "../../images/movieimg.jpg"
+import Preloader from "../Movies/Preloader/Preloader";
 import SearchForm from "../Movies/SearchForm/SearchForm";
-
-function SavedMovies() {
-    function renderCards() {
-        const cards = []
-        for (let i = 0; i < 3; i++) {
-            cards.push(<MoviesCard name="В погоне за Бенкси" duration="27 минут" img={movieImg} />)
-        }
-        return cards
-    }
+import MoviesCardList from "../MoviesCardList/MoviesCardList";
+function SavedMovies(props) {
     return (
         <section className="movie-list component">
             <div className="content">     
-                <SearchForm />
-                <ul className="movie-list__list">
-                    {renderCards()}
-                </ul>
-                <div className="movies__btn-container">
-                    <button type="button" className="movies__more-btn movies__more-btn_hidden">Еще</button>
-                </div>
+                <SearchForm
+                isShort={props.isShort}
+                handleSearchBtn={props.handleSearchBtn}
+                handleIsShort={props.handleIsShort}
+                length={props.movies.length}
+                />
+                {props.isFetching ? <Preloader /> : 
+                <MoviesCardList
+                movies={props.movies}
+                amountOfMovies={props.movies.length}
+                handleSaveMovie={props.handleSaveMovie}
+                isSaved={true}
+                isError={props.isError}
+                ></MoviesCardList>}
             </div>
         </section>
     )

@@ -21,6 +21,7 @@
 }
 
 .form__input {
+    position: relative;
     box-sizing: border-box;
     width: 100%;
     padding: 0;
@@ -59,6 +60,10 @@
     border-radius: 3px;
     padding: 14px 0;
     font-size: 14px;
+}
+
+.form__btn:disabled {
+    opacity: 0.7;
 }
 
 .form__question {

@@ -13,6 +13,9 @@
 }
 
 .movie__title {
+    white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
     font-weight: 500;
     font-size: 15px;
     line-height: 1.2;
@@ -21,13 +24,22 @@
 
 .movie__duration {
     font-weight: normal;
+    white-space: nowrap;
     font-size: 13px;
     line-height: 1.38;
 }
 
-.movie__img {
-    object-fit: contain;
+.movie__trailer {
+    display: block;
+    height: 100%;
     width: 100%;
+}
+
+.movie__img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    object-position: center;
 }
 
 .movie__save-btn {
@@ -58,7 +70,7 @@
     right: 0;
     left: 0;
     bottom: 0;
-    z-index: 3;
+    z-index: 1;
     background-color: #FF4062;
     background-image: url('../../images/savedicon.svg');
     background-repeat: no-repeat;

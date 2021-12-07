@@ -1,23 +1,77 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../../images/headerLogo.png';
+import { useLocation } from "react-router";
+import * as validation from "../../utils/validation";
+import * as auth from '../../utils/auth';
+import { useHistory } from 'react-router-dom';
 
 function Form(props) {
+    const location = useLocation();
+    const history = useHistory();
+    const [email, setEmail] = React.useState("");
+    const [password, setPassword] = React.useState("");
+    const [emailError, setEmailError] = React.useState("")
+    const [passwordError, setPasswordError] = React.useState("");
+    const [isSubmit, setIsSubmit] = React.useState(false);
+    React.useEffect(() => {
+        auth.checkToken()
+        .then(() => {
+            history.push("/movies")
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    }, [])
+    React.useEffect(() => {
+        const noErr = emailError.length === 0 && passwordError.length === 0 && props.errorMessage.length === 0
+        if(noErr) {
+            setIsSubmit(true)
+        } else {
+            setIsSubmit(false)
+        }
+    }, [emailError, passwordError, props.errorMessage])
+    
+    function handleChangeEmail(e) {
+        setEmail(e.target.value);
+        setEmailError(validation.validateEmail(e.target.value))
+      }
+    
+    function handleChangePassword(e) {
+        setPassword(e.target.value);
+        setPasswordError(validation.validatePassword(e.target.value))
+    }
+
+    function handleSubmit(e) {
+        e.preventDefault();
+        if (isSubmit) {
+            if (location.pathname === "/signup") {
+                console.log(props.name, email, password);
+                props.onSubmit(props.name, email, password)
+            } else if (location.pathname === "/signin") {
+                props.onSubmit(email, password);
+            }
+        }
+
+    }
+
     return ( 
         <section className="form">
+            <Link className="header__link" to="/">
             <img className="form__icon" alt="icon" src={logo}/>
+            </Link>
             <h2 className="form__greetings">{props.greets}</h2>
-            <form className="form__form">
+            <form className="form__form" onSubmit={handleSubmit}>
                 <div className="form__wrapp">
                     {props.children}
+                    <span className="error__text error__text_form">{emailError}</span>
                     <span className="form__placeholder">Email</span>
-                    <input required minLength="2" className="form__input" type="email" />
-                    <span className="error"></span>
+                    <input disabled={props.isFetching} onChange={handleChangeEmail} required minLength="2" className="form__input" type="email" />
                     <span className="form__placeholder">Пароль</span>
-                    <input required minLength="2" className="form__input" type="password" />
-                    <span className="error"></span>
+                    <span className="error__text error__text_form">{passwordError}</span>
+                    <input disabled={props.isFetching} onChange={handleChangePassword} required minLength="2" className="form__input" type="password" />
                 </div>
-                <button className="form__btn" type="submit">
+                <button disabled={isSubmit ? false : true} className="form__btn" type="submit">
                     {props.btnText}
                 </button>
             </form>
